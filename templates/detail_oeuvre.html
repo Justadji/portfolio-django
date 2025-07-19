@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{{ oeuvre.titre }}</h1>
+<img src="{{ oeuvre.image.url }}" alt="{{ oeuvre.titre }}">
+<p>{{ oeuvre.description }}</p>
+<p>Catégorie : {{ oeuvre.get_categorie_display }}</p>
+<a href="{% url 'galerie' %}">Retour à la galerie</a>
+{% endblock %}

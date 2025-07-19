@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Commander un Portrait{% endblock %}
+
+{% block content %}
+<h1>Commander votre portrait personnalisé</h1>
+
+<section class="order-form">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn-primary">Envoyer</button>
+    </form>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</section>
+
+{% endblock %}

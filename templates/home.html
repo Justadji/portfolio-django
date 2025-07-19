@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Accueil - Mon Portfolio{% endblock %}
+
+{% block content %}
+
+<section class="slider">
+    <div class="overlay">
+        <div class="slides">
+            <div class="slide active">
+                <h1>Offrez-vous un portrait d’exception</h1>
+                <p>Des œuvres uniques réalisées à la main.</p>
+                <a href="{% url 'commander' %}" class="btn-primary">Commander</a>
+            </div>
+            <div class="slide">
+                <h1>Des portraits faits avec passion</h1>
+                <p>Capturer l’essence de chaque regard.</p>
+                <a href="{% url 'galerie' %}" class="btn-secondary">Voir la Galerie</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% load static %}
+
+<section class="about">
+    <div class="about-content">
+        <img src="{% static 'images/portraitiste.jpg' %}" alt="Portraitiste">
+        <div class="about-text">
+            <h2>À propos de moi</h2>
+            <p>Je suis un portraitiste passionné par l’art de capturer les émotions et les traits uniques de chaque personne. Chaque œuvre est le fruit d’un travail soigné, réalisé à la main avec amour du détail.</p>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+
