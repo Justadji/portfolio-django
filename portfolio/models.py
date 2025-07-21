@@ -1,17 +1,17 @@
 from django.db import models
 
+class Categorie(models.Model):
+    nom = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.nom
+
+
 class Oeuvre(models.Model):
-    CATEGORIES = [
-        ('portrait', 'Portrait'),
-        ('paysage', 'Paysage'),
-        ('abstrait', 'Abstrait'),
-        ('autre', 'Autre'),
-    ]
     titre = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
-    image = models.ImageField(upload_to='galerie/')
-    categorie = models.CharField(max_length=50, choices=CATEGORIES, default='autre')
-    date_creation = models.DateField(auto_now_add=True)
+    description = models.TextField()
+    image = models.ImageField(upload_to='oeuvres/')
+    categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE, related_name='oeuvres')
 
     def __str__(self):
         return self.titre
@@ -25,23 +25,3 @@ class Commande(models.Model):
 
     def __str__(self):
         return f"{self.nom} - {self.date_commande.strftime('%d/%m/%Y')}"
-
-
-class Oeuvre(models.Model):
-    CATEGORIES = [
-        ('portrait', 'Portrait'),
-        ('paysage', 'Paysage'),
-        ('abstrait', 'Abstrait'),
-        ('autre', 'Autre'),
-    ]
-
-    titre = models.CharField(max_length=200)
-    description = models.TextField()
-    image = models.ImageField(upload_to='oeuvres/')
-    categorie = models.CharField(max_length=50, choices=CATEGORIES, default='autre')
-    date_creation = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.titre
-
-
