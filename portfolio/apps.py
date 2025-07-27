@@ -3,9 +3,10 @@ import os
 
 class PortfolioConfig(AppConfig):
     name = 'portfolio'
-    default_auto_field = 'django.db.models.BigAutoField'
+    #default_auto_field = 'django.db.models.BigAutoField'
     
     def ready(self):
+        print("🔥 App Portfolio prête.")
         import portfolio.signals
         if os.getenv('CREATE_SUPERUSER', 'False') == 'True':
             from django.db.utils import OperationalError
