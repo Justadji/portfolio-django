@@ -7,7 +7,7 @@ class PortfolioConfig(AppConfig):
     
     def ready(self):
         import portfolio.signals
-        if os.getenv('CREATE_SUPERUSER', 'False') == 'True':
+        if os.getenv('CREATE_SUPERUSER', 'True') == 'True':
             print("🔥 App Portfolio prête.")
             from django.db.utils import OperationalError
             try:
