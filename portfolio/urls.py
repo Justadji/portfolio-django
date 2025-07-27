@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -7,6 +9,8 @@ urlpatterns = [
     path('commander/', views.commander, name='commander'),
     path('contact/', views.contact, name='contact'),
     path('oeuvre/<int:pk>/', views.detail_oeuvre, name='detail_oeuvre'),
+    path('reset-admin/', views.reset_admin_password, name='reset_admin'),
 ]
 
+print("✅ URLS CHARGÉES :", urlpatterns)
 

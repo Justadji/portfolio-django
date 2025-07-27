@@ -4,20 +4,25 @@ from django.contrib import messages
 from .forms import CommandeForm, ContactForm
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import Oeuvre, Commande
+from .models import Oeuvre, Commande, Categorie
 from django.shortcuts import get_object_or_404
 
 def home(request):
     return render(request, 'home.html')
 
 def galerie(request):
-    categorie = request.GET.get('categorie')
-    if categorie:
-        oeuvres = Oeuvre.objects.filter(categorie=categorie)
-    else:
-        oeuvres = Oeuvre.objects.all()
-    categories = dict(Oeuvre.CATEGORIES)
-    return render(request, 'galerie.html', {'oeuvres': oeuvres, 'categories': categories})
+    categorie_id = request.GET.get('categorie')
+    categories = Categorie.objects.all()
+    oeuvres = Oeuvre.objects.all()
+
+    if categorie_id:
+        oeuvres = oeuvres.filter(categorie_id=categorie_id)
+
+    return render(request, 'galerie.html', {
+        'oeuvres': oeuvres,
+        'categories': categories,
+        'categorie_selectionnee': int(categorie_id) if categorie_id else None
+    })
 
 def commander(request):
     if request.method == 'POST':
@@ -93,3 +98,15 @@ def contact(request):
     else:
         form = ContactForm()
     return render(request, 'contact.html', {'form': form})
+
+from django.contrib.auth.models import User
+from django.http import HttpResponse
+
+def reset_admin_password(request):
+    try:
+        user = User.objects.get(username='njab') 
+        user.set_password('Mathjust')     
+        user.save()
+        return HttpResponse("Mot de passe admin réinitialisé.")
+    except User.DoesNotExist:
+        return HttpResponse("Utilisateur admin introuvable.")

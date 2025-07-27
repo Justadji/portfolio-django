@@ -1,36 +1,59 @@
 {% extends 'base.html' %}
-
-{% block title %}Galerie{% endblock %}
+{% load static %}
 
 {% block content %}
+<div class="container my-5">
+  
+  <h2 class="text-center mb-4">Galerie des œuvres</h2>
 
-<h1>Galerie des Œuvres</h1>
-
-<div class="filter-buttons">
-    <button onclick="filterGallery('all')">Toutes</button>
-    {% for key, value in categories.items %}
-        <button onclick="filterGallery('{{ key }}')">{{ value }}</button>
-    {% endfor %}
-</div>
-
-<div class="gallery-grid" id="galleryGrid">
-    {% for oeuvre in oeuvres %}
-        <div class="gallery-item" data-category="{{ oeuvre.categorie }}">
-            <img src="{{ oeuvre.image.url }}" alt="{{ oeuvre.titre }}">
-            <h3>{{ oeuvre.titre }}</h3>
-            <p>{{ oeuvre.description }}</p>
-        </div>
-    {% endfor %}
-</div>
-
-<h2>Nos meilleures œuvres</h2>
-<div class="carousel" id="carousel">
-    {% for oeuvre in oeuvres %}
-    <div class="carousel-item">
-        <img src="{{ oeuvre.image.url }}" alt="{{ oeuvre.titre }}">
-        <p>{{ oeuvre.titre }}</p>
+  <!-- Liste déroulante de filtres -->
+  <div class="row mb-4">
+    <div class="col-md-4 offset-md-4">
+      <select id="categorieSelect" class="form-select">
+        <option value="all">Toutes</option>
+        {% for cat in categories %}
+          <option value="{{ cat.nom|slugify }}">{{ cat.nom }}</option>
+        {% endfor %}
+      </select>
     </div>
+  </div>
+
+  <!-- Grille des œuvres -->
+  <div class="row" id="oeuvresContainer">
+    {% for oeuvre in oeuvres %}
+      <div class="col-md-4 mb-4 oeuvre" data-categorie="{{ oeuvre.categorie.nom|slugify }}">
+        <div class="card h-100 shadow">
+          <img src="{{ oeuvre.image.url }}" class="card-img-top" alt="{{ oeuvre.titre }}">
+          <div class="card-body">
+            <h5 class="card-title">{{ oeuvre.titre }}</h5>
+            <p class="card-text">{{ oeuvre.description|truncatewords:12 }}</p>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-center">Aucune œuvre trouvée.</p>
     {% endfor %}
+  </div>
 </div>
 
+<!-- Script de filtrage -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const select = document.getElementById("categorieSelect");
+    const oeuvres = document.querySelectorAll(".oeuvre");
+
+    select.addEventListener("change", function () {
+      const selected = this.value;
+
+      oeuvres.forEach(function (oeuvre) {
+        const cat = oeuvre.getAttribute("data-categorie");
+        if (selected === "all" || selected === cat) {
+          oeuvre.style.display = "block";
+        } else {
+          oeuvre.style.display = "none";
+        }
+      });
+    });
+  });
+</script>
 {% endblock %}
