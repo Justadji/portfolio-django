@@ -98,15 +98,3 @@ def contact(request):
     else:
         form = ContactForm()
     return render(request, 'contact.html', {'form': form})
-
-from django.contrib.auth.models import User
-from django.http import HttpResponse
-
-def reset_admin_password(request):
-    try:
-        user = User.objects.get(username='njab') 
-        user.set_password('Mathjust')     
-        user.save()
-        return HttpResponse("Mot de passe admin réinitialisé.")
-    except User.DoesNotExist:
-        return HttpResponse("Utilisateur admin introuvable.")
