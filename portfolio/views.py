@@ -98,3 +98,15 @@ def contact(request):
     else:
         form = ContactForm()
     return render(request, 'contact.html', {'form': form})
+
+from django.http import HttpResponse
+from .models import Categorie
+
+def init_categories(request):
+    noms = ["Portrait", "Peinture", "Dessin", "Croquis"]
+    count = 0
+    for nom in noms:
+        obj, created = Categorie.objects.get_or_create(nom=nom)
+        if created:
+            count += 1
+    return HttpResponse(f"{count} catégories ajoutées ou déjà existantes.")

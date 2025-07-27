@@ -9,4 +9,5 @@ urlpatterns = [
     path('commander/', views.commander, name='commander'),
     path('contact/', views.contact, name='contact'),
     path('oeuvre/<int:pk>/', views.detail_oeuvre, name='detail_oeuvre'),
+    path('init-categories/', views.init_categories, name='init_categories'),
 ]
