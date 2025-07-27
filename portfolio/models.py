@@ -13,8 +13,7 @@ class Oeuvre(models.Model):
     titre = models.CharField(max_length=200)
     image = models.ImageField(upload_to='oeuvres/')
     description = models.TextField(blank=True)
-    categorie = models.ForeignKey(Categorie, on_delete=models.CASCADE)
-
+    categorie = models.ForeignKey(Categorie, on_delete=models.SET_NULL, null=True, blank=True)
     def __str__(self):
         return self.titre
 

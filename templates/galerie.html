@@ -7,16 +7,13 @@
   <h2 class="text-center mb-4">Galerie des œuvres</h2>
 
   <!-- Liste déroulante de filtres -->
-  <div class="row mb-4">
-    <div class="col-md-4 offset-md-4">
-      <select id="categorieSelect" class="form-select">
-        <option value="all">Toutes</option>
-        {% for cat in categories %}
-          <option value="{{ cat.nom|slugify }}">{{ cat.nom }}</option>
-        {% endfor %}
-      </select>
-    </div>
-  </div>
+<select name="categorie">
+  <option value="">Toutes les catégories</option>
+  {% for cat in categories %}
+    <option value="{{ cat.nom }}">{{ cat.nom }}</option>
+  {% endfor %}
+</select>
+
 
   <!-- Grille des œuvres -->
   <div class="row" id="oeuvresContainer">
