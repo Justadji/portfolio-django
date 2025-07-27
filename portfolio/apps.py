@@ -6,9 +6,9 @@ class PortfolioConfig(AppConfig):
     #default_auto_field = 'django.db.models.BigAutoField'
     
     def ready(self):
-        print("🔥 App Portfolio prête.")
         import portfolio.signals
         if os.getenv('CREATE_SUPERUSER', 'False') == 'True':
+            print("🔥 App Portfolio prête.")
             from django.db.utils import OperationalError
             try:
                 if not User.objects.filter(is_superuser=True).exists():
