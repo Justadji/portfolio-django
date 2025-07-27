@@ -6,7 +6,7 @@ class PortfolioConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     
     def ready(self):
-        from django.contrib.auth.models import User
+        import portfolio.signals
         if os.getenv('CREATE_SUPERUSER', 'False') == 'True':
             from django.db.utils import OperationalError
             try:
