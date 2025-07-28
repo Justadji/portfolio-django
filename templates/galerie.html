@@ -1,45 +1,49 @@
 {% extends "base.html" %}
 {% block title %}Galerie{% endblock %}
 {% load static %}
-
 {% block content %}
-<div class="container">
-    <h1 class="text-3xl font-bold mb-6 text-center">Galerie d'œuvres</h1>
+<script src="https://cdn.tailwindcss.com"></script>
+<section class="py-8 px-4">
+    <div class="container">
+        <h1 class="text-3xl font-bold mb-6 text-center">Galerie d'œuvres</h1>
 
-    <!-- Filtres par catégorie -->
-    <div class="filter-buttons">
-        <a href="{% url 'galerie' %}"
-           class="btn-primary {% if not categorie_active %}active{% endif %}">
-            Toutes les catégories
-        </a>
-        {% for categorie in categories %}
-            <a href="?categorie={{ categorie.id }}"
-               class="btn-primary {% if categorie.id == categorie_active %}active{% endif %}">
-                {{ categorie.nom }}
+        <!-- Filtres par catégorie -->
+        <div class="filter-buttons">
+            <a href="{% url 'galerie' %}"
+            class="btn-primary {% if not categorie_active %}active{% endif %}">
+                Toutes les catégories
             </a>
-        {% endfor %}
-    </div>
-
-    <!-- Galerie des œuvres -->
-    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {% for oeuvre in oeuvres %}
-        <div class="border rounded shadow overflow-hidden bg-white">
-            <img src="{{ oeuvre.image.url }}" alt="{{ oeuvre.titre }}" class="w-full h-24 object-cover">
-            <div class="p-2">
-                <h2 class="text-base font-semibold">{{ oeuvre.titre }}</h2>
-                <p class="text-sm text-gray-600">{{ oeuvre.description|truncatechars:100 }}</p>
-            </div>
+            {% for categorie in categories %}
+                <a href="?categorie={{ categorie.id }}"
+                class="btn-primary {% if categorie.id == categorie_active %}active{% endif %}">
+                    {{ categorie.nom }}
+                </a>
+            {% endfor %}
         </div>
-        {% empty %}
-            <p class="text-center w-full mt-10">Aucune œuvre trouvée dans cette catégorie.</p>
-        {% endfor %}
-    </div>
-</div>
 
-<!-- Popup Overlay -->
-<div id="popupOverlay" class="popup-overlay" onclick="closePopup()">
-    <img id="popupImage" src="" alt="">
-</div>
+        <!-- Galerie des œuvres -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {% for oeuvre in oeuvres %}
+            <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300">
+                <img src="{{ oeuvre.image.url }}" alt="{{ oeuvre.titre }}"
+                    class="w-full h-64 object-cover cursor-pointer hover:scale-105 transition-transform duration-300"
+                    onclick="openPopup('{{ oeuvre.image.url }}', '{{ oeuvre.titre }}')">
+                <div class="p-4">
+                    <h2 class="text-lg font-semibold">{{ oeuvre.titre }}</h2>
+                    <p class="text-sm text-gray-600">{{ oeuvre.description|truncatechars:100 }}</p>
+                </div>
+            </div>
+            {% empty %}
+                <p class="text-center col-span-full">Aucune œuvre trouvée.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Popup Overlay -->
+    <div id="popupOverlay" class="popup-overlay" onclick="closePopup()">
+        <img id="popupImage" src="" alt="">
+    </div>
+</section>
 
 <!-- Script JavaScript -->
 <script>
