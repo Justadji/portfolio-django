@@ -5,7 +5,7 @@ from .forms import CommandeForm, ContactForm
 from django.core.mail import send_mail
 from django.conf import settings
 from .models import Oeuvre, Commande, Categorie
-from django.shortcuts import get_object_or_404
+from django.shortcuts import render, get_object_or_404
 
 def home(request):
     return render(request, 'home.html')
@@ -62,7 +62,6 @@ def detail_oeuvre(request, pk):
     oeuvre = get_object_or_404(Oeuvre, pk=pk)
     return render(request, 'detail_oeuvre.html', {'oeuvre': oeuvre})
 
-from django.shortcuts import render
 
 def galerie(request):
     categorie_id = request.GET.get('categorie')
@@ -117,3 +116,7 @@ def contact(request):
         form = ContactForm()
     return render(request, 'contact.html', {'form': form})
 
+
+def oeuvre_detail(request, pk):
+    oeuvre = get_object_or_404(Oeuvre, pk=pk)
+    return render(request, 'oeuvre_detail.html', {'oeuvre': oeuvre})

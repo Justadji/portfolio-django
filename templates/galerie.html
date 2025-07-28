@@ -1,81 +1,85 @@
 {% extends "base.html" %}
 {% block title %}Galerie{% endblock %}
 {% load static %}
+
 {% block content %}
 <script src="https://cdn.tailwindcss.com"></script>
+
 <section class="py-8 px-4">
-    <div class="container">
-        <h1 class="text-3xl font-bold mb-6 text-center">Galerie d'œuvres</h1>
+  <div class="container mx-auto">
+    <h1 class="text-3xl font-bold mb-6 text-center">Galerie d'œuvres</h1>
 
-        <!-- Filtres par catégorie -->
-        <div class="filter-buttons">
-            <a href="{% url 'galerie' %}"
-            class="btn-primary {% if not categorie_active %}active{% endif %}">
-                Toutes les catégories
-            </a>
-            {% for categorie in categories %}
-                <a href="?categorie={{ categorie.id }}"
-                class="btn-primary {% if categorie.id == categorie_active %}active{% endif %}">
-                    {{ categorie.nom }}
-                </a>
-            {% endfor %}
-        </div>
-
-        <!-- Galerie des œuvres -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {% for oeuvre in oeuvres %}
-            <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300">
-                <img src="{{ oeuvre.image.url }}" alt="{{ oeuvre.titre }}"
-                    class="w-full h-64 object-cover cursor-pointer hover:scale-105 transition-transform duration-300"
-                    onclick="openPopup('{{ oeuvre.image.url }}', '{{ oeuvre.titre }}')">
-                <div class="p-4">
-                    <h2 class="text-lg font-semibold">{{ oeuvre.titre }}</h2>
-                    <p class="text-sm text-gray-600">{{ oeuvre.description|truncatechars:100 }}</p>
-                </div>
-            </div>
-            {% empty %}
-                <p class="text-center col-span-full">Aucune œuvre trouvée.</p>
-            {% endfor %}
-        </div>
+    <!-- Filtres par catégorie -->
+    <div class="flex flex-wrap justify-center gap-3 mb-8">
+      <a href="{% url 'galerie' %}"
+         class="px-4 py-2 rounded-full border {% if not categorie_active %}bg-green-600 text-white{% else %}bg-gray-200{% endif %}">
+        Toutes les catégories
+      </a>
+      {% for categorie in categories %}
+      <a href="?categorie={{ categorie.id }}"
+         class="px-4 py-2 rounded-full border {% if categorie.id == categorie_active %}bg-green-600 text-white{% else %}bg-gray-200{% endif %}">
+        {{ categorie.nom }}
+      </a>
+      {% endfor %}
     </div>
 
-    <!-- Popup Overlay -->
-    <div id="popupOverlay" class="popup-overlay" onclick="closePopup()">
-        <img id="popupImage" src="" alt="">
+    <!-- Galerie -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {% for oeuvre in oeuvres %}
+      <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300">
+        <div class="relative group">
+          <img src="{{ oeuvre.image.url }}" alt="{{ oeuvre.titre }}"
+               class="w-full h-64 object-cover cursor-pointer group-hover:scale-105 transition-transform duration-300"
+               onclick="openPopup('{{ oeuvre.image.url }}', '{{ oeuvre.titre }}')">
+          <a href="{% url 'oeuvre_detail' oeuvre.id%}" class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 flex items-center justify-center text-white text-lg font-bold opacity-0 group-hover:opacity-100 transition duration-300">
+            Voir détails
+          </a>
+        </div>
+        <div class="p-4">
+          <h2 class="text-lg font-semibold">{{ oeuvre.titre }}</h2>
+          <p class="text-sm text-gray-600">{{ oeuvre.description|truncatechars:100 }}</p>
+        </div>
+      </div>
+      {% empty %}
+      <p class="text-center col-span-full">Aucune œuvre trouvée.</p>
+      {% endfor %}
     </div>
+  </div>
+
+  <!-- Popup -->
+  <div id="popupOverlay" class="fixed inset-0 bg-black bg-opacity-80 hidden items-center justify-center z-50">
+    <div class="relative max-w-4xl w-full px-6">
+      <span onclick="closePopup()"
+            class="absolute top-4 right-6 text-white text-4xl font-bold cursor-pointer z-50">&times;</span>
+      <img id="popupImage" src="" alt="" class="w-full h-auto rounded-xl shadow-lg transform transition-transform duration-300 hover:scale-105 cursor-zoom-in">
+    </div>
+  </div>
 </section>
 
-<!-- Script JavaScript -->
+<!-- JS -->
 <script>
-    function openPopup(imageUrl, title) {
-        const popup = document.getElementById('popupOverlay');
-        const img = document.getElementById('popupImage');
-        img.src = imageUrl;
-        img.alt = title;
-        popup.style.display = 'flex';
+  function openPopup(url, title) {
+    const popup = document.getElementById("popupOverlay");
+    const img = document.getElementById("popupImage");
+    img.src = url;
+    img.alt = title;
+    popup.classList.remove("hidden");
+    popup.classList.add("flex");
+  }
+
+  function closePopup() {
+    const popup = document.getElementById("popupOverlay");
+    popup.classList.remove("flex");
+    popup.classList.add("hidden");
+  }
+
+  document.getElementById("popupImage")?.addEventListener("click", function () {
+    if (this.classList.contains("scale-150")) {
+      this.classList.remove("scale-150");
+      this.classList.add("scale-100");
+    } else {
+      this.classList.add("scale-150");
     }
-
-    function closePopup() {
-        document.getElementById('popupOverlay').style.display = 'none';
-    }
-
-    // Animation on scroll
-    document.addEventListener("DOMContentLoaded", function () {
-        const items = document.querySelectorAll(".fade-in");
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add("visible");
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, {
-            threshold: 0.1
-        });
-
-        items.forEach(item => {
-            observer.observe(item);
-        });
-    });
+  });
 </script>
 {% endblock %}
