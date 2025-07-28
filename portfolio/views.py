@@ -62,19 +62,27 @@ def detail_oeuvre(request, pk):
     oeuvre = get_object_or_404(Oeuvre, pk=pk)
     return render(request, 'detail_oeuvre.html', {'oeuvre': oeuvre})
 
+from django.shortcuts import render
+
 def galerie(request):
-    categorie_nom = request.GET.get('categorie')
-    if categorie_nom:
-        oeuvres = Oeuvre.objects.filter(categorie__nom=categorie_nom)
+    categorie_id = request.GET.get('categorie')
+    categories = Categorie.objects.all()
+
+    if categorie_id:
+        oeuvres = Oeuvre.objects.filter(categorie_id=categorie_id)
     else:
         oeuvres = Oeuvre.objects.all()
-    categories = Categorie.objects.all()
-    return render(request, 'galerie.html', {
+    try:
+        categorie_active = int(categorie_id) if categorie_id else None
+    except ValueError:
+        categorie_active = None
+    context = {
         'oeuvres': oeuvres,
-        'categories': categories
-    })
+        'categories': categories,
+        'categorie_active': categorie_active,
+    }
+    return render(request, 'galerie.html', context)
 
-    #return render(request, 'galerie.html', {'oeuvres': oeuvres})
 
 def commander(request):
     if request.method == 'POST':

@@ -42,3 +42,29 @@ document.addEventListener('DOMContentLoaded', function () {
         interval: 200
     });
 });
+
+// Effet fade-in au scroll
+const faders = document.querySelectorAll('.fade-in');
+const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+});
+faders.forEach(el => observer.observe(el));
+
+// Popup image
+document.querySelectorAll('.gallery-item img').forEach(img => {
+    img.style.cursor = 'pointer';
+    img.addEventListener('click', () => {
+        const popup = document.createElement('div');
+        popup.className = 'popup-overlay';
+        popup.style.display = 'flex';
+        const fullImg = document.createElement('img');
+        fullImg.src = img.src;
+        popup.appendChild(fullImg);
+        document.body.appendChild(popup);
+        popup.addEventListener('click', () => popup.remove());
+    });
+});

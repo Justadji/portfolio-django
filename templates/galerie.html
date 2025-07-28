@@ -1,56 +1,77 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% block title %}Galerie{% endblock %}
 {% load static %}
 
 {% block content %}
-<div class="container my-5">
-  
-  <h2 class="text-center mb-4">Galerie des œuvres</h2>
+<div class="container">
+    <h1 class="text-3xl font-bold mb-6 text-center">Galerie d'œuvres</h1>
 
-  <!-- Liste déroulante de filtres -->
-<select name="categorie">
-  <option value="">Toutes les catégories</option>
-  {% for cat in categories %}
-    <option value="{{ cat.nom }}">{{ cat.nom }}</option>
-  {% endfor %}
-</select>
+    <!-- Filtres par catégorie -->
+    <div class="filter-buttons">
+        <a href="{% url 'galerie' %}"
+           class="btn-primary {% if not categorie_active %}active{% endif %}">
+            Toutes les catégories
+        </a>
+        {% for categorie in categories %}
+            <a href="?categorie={{ categorie.id }}"
+               class="btn-primary {% if categorie.id == categorie_active %}active{% endif %}">
+                {{ categorie.nom }}
+            </a>
+        {% endfor %}
+    </div>
 
-
-  <!-- Grille des œuvres -->
-  <div class="row" id="oeuvresContainer">
-    {% for oeuvre in oeuvres %}
-      <div class="col-md-4 mb-4 oeuvre" data-categorie="{{ oeuvre.categorie.nom|slugify }}">
-        <div class="card h-100 shadow">
-          <img src="{{ oeuvre.image.url }}" class="card-img-top" alt="{{ oeuvre.titre }}">
-          <div class="card-body">
-            <h5 class="card-title">{{ oeuvre.titre }}</h5>
-            <p class="card-text">{{ oeuvre.description|truncatewords:12 }}</p>
-          </div>
+    <!-- Galerie des œuvres -->
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {% for oeuvre in oeuvres %}
+        <div class="border rounded shadow overflow-hidden bg-white">
+            <img src="{{ oeuvre.image.url }}" alt="{{ oeuvre.titre }}" class="w-full h-24 object-cover">
+            <div class="p-2">
+                <h2 class="text-base font-semibold">{{ oeuvre.titre }}</h2>
+                <p class="text-sm text-gray-600">{{ oeuvre.description|truncatechars:100 }}</p>
+            </div>
         </div>
-      </div>
-    {% empty %}
-      <p class="text-center">Aucune œuvre trouvée.</p>
-    {% endfor %}
-  </div>
+        {% empty %}
+            <p class="text-center w-full mt-10">Aucune œuvre trouvée dans cette catégorie.</p>
+        {% endfor %}
+    </div>
 </div>
 
-<!-- Script de filtrage -->
+<!-- Popup Overlay -->
+<div id="popupOverlay" class="popup-overlay" onclick="closePopup()">
+    <img id="popupImage" src="" alt="">
+</div>
+
+<!-- Script JavaScript -->
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const select = document.getElementById("categorieSelect");
-    const oeuvres = document.querySelectorAll(".oeuvre");
+    function openPopup(imageUrl, title) {
+        const popup = document.getElementById('popupOverlay');
+        const img = document.getElementById('popupImage');
+        img.src = imageUrl;
+        img.alt = title;
+        popup.style.display = 'flex';
+    }
 
-    select.addEventListener("change", function () {
-      const selected = this.value;
+    function closePopup() {
+        document.getElementById('popupOverlay').style.display = 'none';
+    }
 
-      oeuvres.forEach(function (oeuvre) {
-        const cat = oeuvre.getAttribute("data-categorie");
-        if (selected === "all" || selected === cat) {
-          oeuvre.style.display = "block";
-        } else {
-          oeuvre.style.display = "none";
-        }
-      });
+    // Animation on scroll
+    document.addEventListener("DOMContentLoaded", function () {
+        const items = document.querySelectorAll(".fade-in");
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("visible");
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        items.forEach(item => {
+            observer.observe(item);
+        });
     });
-  });
 </script>
 {% endblock %}
