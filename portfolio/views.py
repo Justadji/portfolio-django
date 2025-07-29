@@ -151,3 +151,9 @@ def envoyer_email_confirmation(commande):
     email.attach_alternative(html_content, "text/html")
     email.send()
 
+from django.http import HttpResponse
+from django.core.management import call_command
+
+def migrate_now(request):
+    call_command('migrate')
+    return HttpResponse("Migrations appliquées avec succès.")
