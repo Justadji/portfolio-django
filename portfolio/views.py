@@ -150,3 +150,17 @@ def envoyer_email_confirmation(commande):
     email = EmailMultiAlternatives(subject, text_content, from_email, to_email, bcc=bcc)
     email.attach_alternative(html_content, "text/html")
     email.send()
+
+from django.contrib.auth.models import User
+from django.http import HttpResponse
+
+def create_superuser_view(request):
+    if User.objects.filter(username="njab").exists():
+        return HttpResponse("Le superutilisateur existe déjà.")
+
+    User.objects.create_superuser(
+        username="njab",
+        email="justenganongo@gmail.com",
+        password="Mathjust"  # change le mot de passe après usage
+    )
+    return HttpResponse("Superutilisateur créé avec succès.")

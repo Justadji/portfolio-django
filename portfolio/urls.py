@@ -10,4 +10,5 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
     path('oeuvre/<int:pk>/', views.oeuvre_detail, name='oeuvre_detail'),
     path('merci/', views.merci, name='merci'),
+    path("create-superuser/", views.create_superuser_view),
 ]
