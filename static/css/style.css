@@ -514,3 +514,164 @@
 .filter-buttons button:hover {
     background-color: #ddd;
 }
+
+/* === PAGE COMMANDE === */
+
+.commande-container {
+    max-width: 600px;
+    margin: 60px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 6px 24px rgba(0, 128, 0, 0.2);
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+.commande-title {
+    font-size: 28px;
+    font-weight: 600;
+    color: #006400;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.commande-form p {
+    margin-bottom: 20px;
+}
+
+.commande-form label {
+    font-weight: bold;
+    color: #444;
+}
+
+.commande-form input,
+.commande-form textarea,
+.commande-form select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border 0.3s ease;
+}
+
+.commande-form input:focus,
+.commande-form textarea:focus,
+.commande-form select:focus {
+    border-color: #006400;
+    outline: none;
+}
+
+.btn-envoyer {
+    background-color: #228B22;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-envoyer:hover {
+    background-color: #1a661a;
+}
+
+.commande-messages {
+    margin-top: 20px;
+    list-style-type: none;
+    padding: 0;
+}
+
+.commande-messages li {
+    padding: 10px;
+    margin-bottom: 8px;
+    border-left: 4px solid #228B22;
+    background-color: #f0fff0;
+    border-radius: 6px;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .commande-container {
+        margin: 30px 15px;
+        padding: 20px;
+    }
+
+    .commande-title {
+        font-size: 22px;
+    }
+
+    .btn-envoyer {
+        width: 100%;
+    }
+}
+
+.container {
+    max-width: 600px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.form-style label {
+    font-weight: bold;
+    margin-top: 1rem;
+    display: block;
+}
+
+.form-style input, .form-style select, .form-style textarea {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.form-style button.btn {
+    padding: 0.8rem 2rem;
+    background-color: #007bff;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.merci-page {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.merci-page h2 {
+    font-size: 2.5rem;
+    color: #28a745;
+}
+
+.merci-page p {
+    font-size: 1.2rem;
+}
+
+.merci-page .btn {
+    margin-top: 2rem;
+    background-color: #007bff;
+    padding: 0.8rem 1.5rem;
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+}

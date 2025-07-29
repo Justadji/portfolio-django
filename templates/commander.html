@@ -1,23 +1,14 @@
 {% extends 'base.html' %}
-
-{% block title %}Commander un Portrait{% endblock %}
+{% load static %}
+{% block title %}Commander un portrait{% endblock %}
 
 {% block content %}
-<h1>Commander votre portrait personnalisé</h1>
-
-<section class="order-form">
-    <form method="post">
+<div class="container">
+    <h2>Commander votre portrait personnalisé</h2>
+    <form method="post" enctype="multipart/form-data" class="form-style">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn-primary">Envoyer</button>
+        <button type="submit" class="btn">Envoyer la commande</button>
     </form>
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-</section>
-
+</div>
 {% endblock %}

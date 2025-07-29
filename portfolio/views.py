@@ -85,14 +85,16 @@ def galerie(request):
 
 def commander(request):
     if request.method == 'POST':
-        form = CommandeForm(request.POST)
+        form = CommandeForm(request.POST, request.FILES)
         if form.is_valid():
-            # Tu peux enregistrer ou envoyer un email ici
-            messages.success(request, "Votre commande a été envoyée avec succès !")
-            return redirect('commander')
+            form.save()
+            return redirect('merci')
     else:
         form = CommandeForm()
     return render(request, 'commander.html', {'form': form})
+
+def merci(request):
+    return render(request, 'merci.html')
 
 
 def contact(request):

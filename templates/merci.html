@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Merci !{% endblock %}
+
+{% block content %}
+<div class="merci-page">
+    <h2>🎉 Merci pour votre commande !</h2>
+    <p>Nous avons bien reçu votre demande et vous contacterons bientôt par e-mail.</p>
+    <a href="{% url 'accueil' %}" class="btn">Retour à l'accueil</a>
+</div>
+{% endblock %}
