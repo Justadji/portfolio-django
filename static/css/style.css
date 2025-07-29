@@ -276,7 +276,7 @@
     line-height: 1.6;
 }
 
-.btn-primary, .btn-secondary {
+.btn-primary, .btn-secondary, .btn-outline-danger {
     padding: 12px 25px;
     border: none;
     text-decoration: none;
@@ -287,7 +287,7 @@
     transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.btn-primary:hover, .btn-secondary:hover {
+.btn-primary:hover, .btn-secondary:hover , .btn-outline-danger:hover{
     transform: translateY(-2px);
     box-shadow: 0 8px 12px rgba(0,0,0,0.3);
 }
@@ -644,7 +644,7 @@
 }
 
 .form-style button.btn {
-    padding: 0.8rem 2rem;
+    padding: 0.8rem 10px;
     background-color: #007bff;
     border: none;
     border-radius: 6px;

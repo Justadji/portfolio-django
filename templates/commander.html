@@ -8,7 +8,19 @@
     <form method="post" enctype="multipart/form-data" class="form-style">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn">Envoyer la commande</button>
+        <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+            <button type="submit" class="btn btn-primary">Envoyer la commande</button>
+            <button type="reset" class="btn btn-outline-danger">Effacer la commande</button>
+        </div>
     </form>
 </div>
+
+<script>
+  document.querySelector('button[type="reset"]').addEventListener('click', function(e) {
+    if (!confirm("Voulez-vous vraiment effacer cette commande ?")) {
+      e.preventDefault();
+    }
+  });
+</script>
+
 {% endblock %}

@@ -1,11 +1,12 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib import messages
 from .forms import CommandeForm, ContactForm
 from django.core.mail import send_mail
 from django.conf import settings
 from .models import Oeuvre, Commande, Categorie
-from django.shortcuts import render, get_object_or_404
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
 
 def home(request):
     return render(request, 'home.html')
@@ -23,23 +24,6 @@ def galerie(request):
         'categories': categories,
         'categorie_selectionnee': int(categorie_id) if categorie_id else None
     })
-
-def commander(request):
-    if request.method == 'POST':
-        form = CommandeForm(request.POST)
-        if form.is_valid():
-            Commande.objects.create(
-                nom=form.cleaned_data['nom'],
-                email=form.cleaned_data['email'],
-                telephone=form.cleaned_data['telephone'],
-                description=form.cleaned_data['description']
-            )
-            messages.success(request, "Votre commande a été enregistrée avec succès !")
-            return redirect('commander')
-    else:
-        form = CommandeForm()
-    return render(request, 'commander.html', {'form': form})
-
 
 def contact(request):
     form = ContactForm()
@@ -82,13 +66,38 @@ def galerie(request):
     }
     return render(request, 'galerie.html', context)
 
-
 def commander(request):
     if request.method == 'POST':
         form = CommandeForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            return redirect('merci')
+            nom = form.cleaned_data['nom']
+            prenom = form.cleaned_data['prenom']
+            email = form.cleaned_data['email']
+            style = form.cleaned_data['style']
+            format = form.cleaned_data['format']
+            description = form.cleaned_data['description']
+            message = f"""
+Nouvelle commande reçue :
+
+Nom : {nom}
+Prénom(s) : {prenom}
+Email : {email}
+Format souhaitée : {format}
+style : {style}
+Description : {description}
+        """
+
+            send_mail(
+                'Nouvelle commande de portrait',
+                message,
+                settings.EMAIL_HOST_USER,
+                ['justenganongo@gmail.com'], 
+                fail_silently=False,
+            )
+            commande = form.save()
+            envoyer_email_confirmation(commande)
+            messages.success(request, "Votre commande a bien été envoyée.")
+            return redirect("merci")
     else:
         form = CommandeForm()
     return render(request, 'commander.html', {'form': form})
@@ -122,3 +131,22 @@ def contact(request):
 def oeuvre_detail(request, pk):
     oeuvre = get_object_or_404(Oeuvre, pk=pk)
     return render(request, 'oeuvre_detail.html', {'oeuvre': oeuvre})
+
+def envoyer_email_confirmation(commande):
+    subject = "Confirmation de votre commande de portrait"
+    from_email = settings.DEFAULT_FROM_EMAIL
+    to_email = [commande.email]
+    bcc = [settings.DEFAULT_FROM_EMAIL]
+
+    context = {
+        'prenom': commande.nom,
+        'format': commande.format,
+        'style': commande.style,
+    }
+
+    text_content = render_to_string("emails/confirmation.txt", context)
+    html_content = render_to_string("emails/confirmation.html", context)
+
+    email = EmailMultiAlternatives(subject, text_content, from_email, to_email, bcc=bcc)
+    email.attach_alternative(html_content, "text/html")
+    email.send()

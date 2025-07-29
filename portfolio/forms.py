@@ -10,10 +10,11 @@ class ContactForm(forms.Form):
 class CommandeForm(forms.ModelForm):
     class Meta:
         model = Commande
-        fields = ['nom', 'email', 'format', 'style', 'description', 'image_reference']
+        fields = ['nom', 'prenom', 'email', 'format', 'style', 'description', 'image_reference']
         labels = {
-            'nom': 'Votre nom',
-            'email': 'Votre adresse e-mail',
+            'nom': 'Nom(s)',
+            'prenom' : 'Prénom(s)',
+            'email': 'Adresse e-mail',
             'format': 'Format du portrait',
             'style': 'Style artistique',
             'description': 'Description / Instructions',
@@ -22,5 +23,4 @@ class CommandeForm(forms.ModelForm):
         widgets = {
             'description': forms.Textarea(attrs={'rows': 4}),
         }
-
 

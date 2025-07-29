@@ -1,0 +1,11 @@
+Merci {{ nom }} !
+
+Votre commande de portrait a bien été reçue.
+
+Format choisi : {{ format }}
+Message :
+{{ description }}
+
+Nous vous contacterons rapidement pour la suite.
+
+— L’équipe du portraitiste

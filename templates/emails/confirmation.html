@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            padding: 20px;
+        }
+        .header {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-left: 5px solid #0066cc;
+        }
+        .details {
+            margin-top: 20px;
+        }
+        .footer {
+            margin-top: 30px;
+            font-size: 0.9em;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>Merci pour votre commande, {{ prenom }} !</h2>
+    </div>
+    <div class="details">
+        <p>Nous avons bien reçu votre demande de portrait.</p>
+        <ul>
+            <li><strong>Format :</strong> {{ format }}</li>
+            <li><strong>Type :</strong> {{ style }}</li>
+        </ul>
+        <p>Un membre de notre équipe vous contactera très bientôt pour la suite.</p>
+    </div>
+    <div class="footer">
+        L'équipe Duerf !<br>
+        <em>Merci pour votre confiance.</em>
+    </div>
+</body>
+</html>
