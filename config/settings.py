@@ -2,6 +2,9 @@ from pathlib import Path
 import os
 import dj_database_url
 from decouple import config
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -55,9 +58,14 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Base de données PostgreSQL
 DATABASES = {
-    'default': dj_database_url.config(
-        default='sqlite:///db.sqlite3'
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'portfoliodb_8kyg',
+        'USER': 'njab',
+        'PASSWORD': '79LfTkqxOEiNqmbkjOJKkkrZNRiASfvg',
+        'HOST': 'dpg-d1uco3fdiees73ajs6eg-a.frankfurt-postgres.render.com',
+        'PORT': '5432',
+    }
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -93,6 +101,3 @@ EMAIL_PORT = config('EMAIL_PORT', cast=int)
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
-
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
