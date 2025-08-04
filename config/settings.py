@@ -90,9 +90,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
-    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
+    'CLOUD_NAME': 'dfnhrnics',
+    'API_KEY': '681547637892461',
+    'API_SECRET': 'EpuV0HfNXi8SXJOT7JaEravrQJI',
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
