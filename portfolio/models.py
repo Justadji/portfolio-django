@@ -1,7 +1,5 @@
 from django.db import models
-
-# galerie/models.py
-from django.db import models
+from cloudinary_storage.storage import MediaCloudinaryStorage
 
 class Categorie(models.Model):
     nom = models.CharField(max_length=100)
@@ -11,7 +9,7 @@ class Categorie(models.Model):
 
 class Oeuvre(models.Model):
     titre = models.CharField(max_length=200)
-    image = models.ImageField(upload_to='oeuvres/')
+    image = models.ImageField(upload_to='oeuvres/', storage=MediaCloudinaryStorage())
     description = models.TextField(blank=True)
     categorie = models.ForeignKey(Categorie, on_delete=models.SET_NULL, null=True, blank=True)
     def __str__(self):
