@@ -1,5 +1,7 @@
 from django.db import models
 from cloudinary_storage.storage import MediaCloudinaryStorage
+from cloudinary.models import CloudinaryField
+
 
 class Categorie(models.Model):
     nom = models.CharField(max_length=100)
@@ -9,7 +11,7 @@ class Categorie(models.Model):
 
 class Oeuvre(models.Model):
     titre = models.CharField(max_length=200)
-    image = models.ImageField(upload_to='oeuvres/', storage=MediaCloudinaryStorage())
+    image = CloudinaryField()
     description = models.TextField(blank=True)
     categorie = models.ForeignKey(Categorie, on_delete=models.SET_NULL, null=True, blank=True)
     def __str__(self):
@@ -35,7 +37,7 @@ class Commande(models.Model):
     format = models.CharField(max_length=10, choices=FORMATS, default="A4")
     style = models.CharField(max_length=20, choices=STYLES, default="Portrait")
     description = models.TextField(blank=True, null=True)
-    image_reference = models.ImageField(upload_to='references/', blank=True, null=True)
+    image_reference = CloudinaryField(blank=True, null=True)
     date_commande = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
