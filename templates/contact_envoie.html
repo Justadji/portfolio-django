@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Envoie message...{% endblock %}
+
+{% block content %}
+<div class="merci-page">
+    <h2>🎉 Votre messsage a été envoyé avec succès !</h2>
+    <p>Nous vous contacterons bientôt par e-mail.</p>
+    <a href="{% url 'home' %}" class="btn">Retour à l'accueil</a>
+</div>
+{% endblock %}

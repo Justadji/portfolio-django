@@ -26,30 +26,21 @@
 }
 
 .hero-banner {
-    background: url('/static/images/hero.jpg') center/cover no-repeat;
+    min-height: 100vh;
     background-position: top center;
+    position: relative;
+    z-index: 1;
+    margin-top: 0;
+    border: 2px solid red;
 }
 
 @media (max-width: 768px) {
     .hero-banner {
         background-size: cover;
         background-position: center top;
+        position: relative;
+        z-index: 1;
     }
-}
-
-.hero-content {
-    text-align: center;
-    margin: auto;
-}
-
-.hero-content h1 {
-    font-size: 3em;
-    margin-bottom: 20px;
-}
-
-.hero-content p {
-    font-size: 1.2em;
-    margin-bottom: 30px;
 }
 
 .btn-primary, .btn-secondary {
@@ -78,7 +69,7 @@
 
 .btn-secondary:hover {
     background-color: white;
-    color: black;
+    color: #000000;
 }
 
 @media (max-width: 768px) {
@@ -171,17 +162,6 @@
     transform: rotate(45deg) translate(-5px, -6px);
 }
 
-.slider {
-    position: relative;
-    height: 80vh;
-    background: url('../images/hero.jpg') center/cover no-repeat;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-}
-
 .overlay {
     position: absolute;
     top: 0; left: 0;
@@ -200,7 +180,7 @@
 }
 
 .slide {
-    position: absolute;
+    display: none;
     width: 100%;
     opacity: 0;
     transition: opacity 1s ease-in-out;
@@ -208,7 +188,9 @@
 
 .slide.active {
     opacity: 1;
+    display: block;
 }
+
 .carousel {
     display: flex;
     overflow-x: auto;
@@ -244,7 +226,10 @@
 /* à propos */
 .about {
     padding: 60px 20px;
-    background: #f9f9f9;
+    background-color: white;
+    position: relative;
+    z-index: 0;
+    margin-top: 0;
 }
 
 .about-content {

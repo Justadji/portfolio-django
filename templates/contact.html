@@ -1,23 +1,35 @@
 {% extends 'base.html' %}
-{% block title %}Contact{% endblock %}
+{% load static %}
+{% block title %}Contact - I'mDuerf{% endblock %}
 
 {% block content %}
+{% if content and content.image_contact %}
+<section class="contact-header" style="background: url('{{ content.image_contact.url }}') center/cover no-repeat;">
+    <div class="overlay">
+        <h1>{{ contenu.titre }}</h1>
+        <p>{{ contenu.texte_intro }}</p>
+    </div>
+</section>
+{% endif %}
 
-<section class="contact-form">
-    <h2>Contactez-moi</h2>
-    <form method="post">
+<div class="container">
+    <h2>Formulaire de contact</h2>
+    <form method="post" enctype="multipart/form-data" class="form-style">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit" class="btn-primary">Envoyer</button>
+        <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+            <button type="submit" class="btn btn-primary">Envoyer le formulaire</button>
+            <button type="reset" class="btn btn-outline-danger">Effacer le formulaire</button>
+        </div>
     </form>
+</div>
 
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-</section>
+<script>
+  document.querySelector('button[type="reset"]').addEventListener('click', function(e) {
+    if (!confirm("Voulez-vous vraiment effacer cette commande ?")) {
+      e.preventDefault();
+    }
+  });
+</script>
 
 {% endblock %}

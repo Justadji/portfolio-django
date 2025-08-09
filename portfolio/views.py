@@ -4,12 +4,22 @@ from django.contrib import messages
 from .forms import CommandeForm, ContactForm
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import Oeuvre, Commande, Categorie
+from .models import Oeuvre, Commande, Categorie, PageAccueil, PageContact, Testimonial
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 
+def base(request):
+    testimonials = Testimonial.objects.filter(visible=True)
+    return render(request, 'base.html', {
+        'testimonials': testimonials
+    })
+
 def home(request):
-    return render(request, 'home.html')
+    contenu = PageAccueil.objects.first()
+    return render(request, 'home.html', {
+        'contenu': contenu,
+    })
+
 
 def galerie(request):
     categorie_id = request.GET.get('categorie')
@@ -26,6 +36,7 @@ def galerie(request):
     })
 
 def contact(request):
+    content = PageContact.objects.first()
     form = ContactForm()
     success = False
 
@@ -40,7 +51,7 @@ def contact(request):
             send_mail(sujet, message, email_from, destinataire)
             success = True
 
-    return render(request, 'contact.html', {'form': form, 'success': success})
+    return render(request, 'contact.html', {'form': form, 'success': success, "content" : content})
 
 def detail_oeuvre(request, pk):
     oeuvre = get_object_or_404(Oeuvre, pk=pk)
@@ -91,7 +102,7 @@ Description : {description}
                 'Nouvelle commande de portrait',
                 message,
                 settings.EMAIL_HOST_USER,
-                ['justenganongo@gmail.com'], 
+                ['fullduerf0809@gmail.com'], 
                 fail_silently=False,
             )
             commande = form.save()
@@ -102,31 +113,36 @@ Description : {description}
         form = CommandeForm()
     return render(request, 'commander.html', {'form': form})
 
+
 def merci(request):
     return render(request, 'merci.html')
 
 
 def contact(request):
-    if request.method == 'POST':
-        form = ContactForm(request.POST)
-        if form.is_valid():
-            nom = form.cleaned_data['nom']
-            email = form.cleaned_data['email']
-            sujet = form.cleaned_data['sujet']
-            message = form.cleaned_data['message']
-            send_mail(
-                f'Contact : {sujet} - {nom}',
-                message,
-                email,
-                [settings.DEFAULT_FROM_EMAIL],  # À configurer
-                fail_silently=False,
-            )
-            messages.success(request, "Votre message a été envoyé avec succès !")
-            return redirect('contact')
-    else:
-        form = ContactForm()
-    return render(request, 'contact.html', {'form': form})
+    contenu = PageContact.objects.first()
+    form = ContactForm(request.POST or None)
+    
+    if request.method == "POST" and form.is_valid():
+        message_obj = form.save()
 
+        # Envoi email
+        send_mail(
+            subject=message_obj.sujet,
+            message=f"Message de {message_obj.nom} ({message_obj.email}):\n\n{message_obj.message}",
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[contenu.email],
+        )
+
+        form = ContactForm()  # formulaire réinitialisé
+        return redirect('contact_envoie')
+
+    return render(request, 'contact.html', {
+        'contenu': contenu,
+        'form': form,
+    })
+
+def contact_envoie(request):
+    return render(request, 'contact_envoie.html')
 
 def oeuvre_detail(request, pk):
     oeuvre = get_object_or_404(Oeuvre, pk=pk)
@@ -136,7 +152,7 @@ def envoyer_email_confirmation(commande):
     subject = "Confirmation de votre commande de portrait"
     from_email = settings.DEFAULT_FROM_EMAIL
     to_email = [commande.email]
-    bcc = [settings.DEFAULT_FROM_EMAIL]
+    #bcc = [settings.DEFAULT_FROM_EMAIL]
 
     context = {
         'prenom': commande.nom,
@@ -147,13 +163,7 @@ def envoyer_email_confirmation(commande):
     text_content = render_to_string("emails/confirmation.txt", context)
     html_content = render_to_string("emails/confirmation.html", context)
 
-    email = EmailMultiAlternatives(subject, text_content, from_email, to_email, bcc=bcc)
+    email = EmailMultiAlternatives(subject, text_content, from_email, to_email)
     email.attach_alternative(html_content, "text/html")
     email.send()
 
-from django.http import HttpResponse
-from django.core.management import call_command
-
-def migrate_now(request):
-    call_command('migrate')
-    return HttpResponse("Migrations appliquées avec succès.")

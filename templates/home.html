@@ -1,37 +1,75 @@
 {% extends 'base.html' %}
 {% block title %}Accueil - I'mDuerf{% endblock %}
+{% load static %}
 
 {% block content %}
-
 <section class="slider">
     <div class="overlay">
         <div class="slides">
             <div class="slide active">
-                <h1>Offrez-vous un portrait d’exception</h1>
-                <p>Des œuvres uniques réalisées à la main.</p>
+                <h1>{{ contenu.titre_slide_1 }}</h1>
+                <p>{{ contenu.texte_slide_1 }}</p>
                 <a href="{% url 'commander' %}" class="btn-primary">Commander</a>
             </div>
             <div class="slide">
-                <h1>Des portraits faits avec passion</h1>
-                <p>Capturer l’essence de chaque regard.</p>
+                <h1>{{ contenu.titre_slide_2 }}</h1>
+                <p>{{ contenu.texte_slide_2 }}</p>
                 <a href="{% url 'galerie' %}" class="btn-secondary">Voir la Galerie</a>
             </div>
         </div>
     </div>
 </section>
 
-{% load static %}
+{% if contenu and contenu.image_accueil %}
+    <style>
+        .hero-banner {
+            background-image: url('{{ contenu.image_accueil.url }}') !important;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: top center;
+        }
+
+        .hero-content {
+            text-align: center;
+            margin: auto;
+        }
+
+        .hero-content h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        .hero-content p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        .slider {
+            position: relative;
+            height: 80vh;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background-image: url('{{ contenu.image_accueil.url }}') !important;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: top center;
+        }
+    </style>
+{% endif %}
 
 <section class="about">
     <div class="about-content">
-        <img src="{% static 'images/portraitiste.jpg' %}" alt="Portraitiste">
+        {% if contenu and contenu.image_profil %}
+            <img src="{{ contenu.image_profil.url }}" alt="Portraitiste">
+        {% endif %}
         <div class="about-text">
             <h2>À propos de moi</h2>
-            <p>Je suis un portraitiste passionné par l’art de capturer les émotions et les traits uniques de chaque personne. Chaque œuvre est le fruit d’un travail soigné, réalisé à la main avec amour du détail.</p>
+            <p>Je suis un portraitiste passionné par l’art de capturer les émotions et les traits uniques de chaque personne...</p>
         </div>
     </div>
 </section>
 
 {% endblock %}
-
-

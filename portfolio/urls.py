@@ -10,5 +10,5 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
     path('oeuvre/<int:pk>/', views.oeuvre_detail, name='oeuvre_detail'),
     path('merci/', views.merci, name='merci'),
-    path("migrate-now/", views.migrate_now),
+    path('contact_envoie/', views.contact_envoie, name='contact_envoie'),
 ]
