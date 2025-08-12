@@ -5,7 +5,7 @@ from .forms import CommandeForm, ContactForm
 from django.core.mail import send_mail
 from django.conf import settings
 from .models import Oeuvre, Commande, Categorie, PageAccueil, PageContact, Testimonial
-from django.core.mail import EmailMultiAlternatives
+from django.core.mail import EmailMultiAlternatives, EmailMessage
 from django.template.loader import render_to_string
 
 def base(request):
@@ -78,38 +78,31 @@ def galerie(request):
     return render(request, 'galerie.html', context)
 
 def commander(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = CommandeForm(request.POST, request.FILES)
         if form.is_valid():
-            nom = form.cleaned_data['nom']
-            prenom = form.cleaned_data['prenom']
-            email = form.cleaned_data['email']
-            style = form.cleaned_data['style']
-            format = form.cleaned_data['format']
-            description = form.cleaned_data['description']
-            message = f"""
-Nouvelle commande reçue :
-
-Nom : {nom}
-Prénom(s) : {prenom}
-Email : {email}
-Format souhaitée : {format}
-style : {style}
-Description : {description}
-        """
-
-            if commande.image_reference:
-                email.attach_file(commande.image_reference.path)
-                
-            send_mail(
-                'Nouvelle commande de portrait',
-                message,
-                settings.EMAIL_HOST_USER,
-                ['fullduerf0809@gmail.com'], 
-                fail_silently=False,
-            )
             commande = form.save()
-            envoyer_email_confirmation(commande)
+
+            # Construire le message
+            message = f"""
+            Nouvelle commande reçue :
+            Nom : {commande.nom}
+            Prénom : {commande.prenom}
+            Email : {commande.email}
+            Format : {commande.format}
+            Style : {commande.style}
+            Description : {commande.description}
+
+            Image de référence : {commande.image_reference.url if commande.image_reference else 'Aucune'}
+            """
+
+            send_mail(
+                subject="Nouvelle commande de portrait",
+                message=message,
+                from_email=settings.EMAIL_HOST_USER,
+                recipient_list=["fullduerf0809@gmail.com"]
+            )
+
             messages.success(request, "Votre commande a bien été envoyée.")
             return redirect("merci")
     else:
