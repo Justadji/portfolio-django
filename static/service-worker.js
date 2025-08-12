@@ -6,7 +6,8 @@ const urlsToCache = [
     "/static/js/main.js",
     "/static/images/icon-192.png",
     "/static/images/icon-512.png",
-    "/static/offline.html"
+    "/static/offline.html",
+    "/static/images/offline.png"
 ];
 
 // Installation
