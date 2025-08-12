@@ -7,6 +7,10 @@
     <title>{% block title %}I'mDuerf{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <script defer src="{% static 'js/script.js' %}"></script>
+    {% load static %}
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+    <meta name="theme-color" content="#000000">
+    <link rel="icon" href="{% static 'images/icon-192.png' %}">
 </head>
 
 <script src="https://unpkg.com/scrollreveal"></script>
@@ -67,6 +71,12 @@
         origin: 'bottom',
         interval: 200
     });
+
+    if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register("{% static 'service-worker.js' %}")
+        .then(() => console.log("Service Worker enregistré."))
+        .catch(err => console.error("Erreur SW:", err));
+    }
 </script>
 
 <button onclick="topFunction()" id="backToTop" title="Haut">↑</button>
