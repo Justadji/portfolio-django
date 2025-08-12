@@ -43,7 +43,7 @@
     <div class="testimonials-container">
         {% for t in testimonials %}
         <div class="testimonial">
-            <p>“{{ t.avis }}”</p>
+            <p>“{{ t.texte }}”</p>
             <span>— {{ t.nom }}</span>
         </div>
         {% empty %}
@@ -57,7 +57,7 @@
     <div class="social-icons">
         <a href="#"><img src="{% static 'images/facebook.png' %}" alt="Facebook"></a>
         <a href="#"><img src="{% static 'images/instagram.png' %}" alt="Instagram"></a>
-        <a href="#"><img src="{% static 'images/twitter.png' %}" alt="Twitter"></a>
+        <a href="#"><img src="{% static 'images/x.png' %}" alt="X"></a>
     </div>
 </footer>
 

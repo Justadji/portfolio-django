@@ -80,16 +80,14 @@ class MessageContact(models.Model):
     def __str__(self):
         return f"{self.nom} - {self.sujet}"
 
-from django.db import models
-
 class Testimonial(models.Model):
     nom = models.CharField(max_length=100)
-    avis = models.TextField()
-    visible = models.BooleanField(default=True)  # pour cacher/afficher facilement
-    date_ajout = models.DateTimeField(auto_now_add=True)
+    texte = models.TextField()
+    date = models.DateField(auto_now_add=True)
 
     class Meta:
-        ordering = ['-date_ajout']
+        ordering = ['-date']  # Les plus récents en premier
 
     def __str__(self):
-        return f"{self.nom} - {self.avis[:30]}..."
+        return f"{self.nom} - {self.texte[:30]}..."
+

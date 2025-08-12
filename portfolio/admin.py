@@ -14,8 +14,7 @@ class OeuvreAdmin(admin.ModelAdmin):
 
 @admin.register(Testimonial)
 class TestimonialAdmin(admin.ModelAdmin):
-    list_display = ('nom', 'avis', 'visible', 'date_ajout')
-    list_filter = ('visible', 'date_ajout')
-    search_fields = ('nom', 'avis')
+    list_display = ("nom", "date")
+    search_fields = ("nom", "texte")
 
 

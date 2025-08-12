@@ -98,6 +98,9 @@ style : {style}
 Description : {description}
         """
 
+            if commande.image_reference:
+                email.attach_file(commande.image_reference.path)
+                
             send_mail(
                 'Nouvelle commande de portrait',
                 message,
