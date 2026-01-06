@@ -62,10 +62,10 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'portfoliodb_8kyg',
-        'USER': 'njab',
-        'PASSWORD': '79LfTkqxOEiNqmbkjOJKkkrZNRiASfvg',
-        'HOST': 'dpg-d1uco3fdiees73ajs6eg-a.frankfurt-postgres.render.com',
+        'NAME': 'postgresql-duerf',
+        'USER': 'postgresql_duerf_user',
+        'PASSWORD': 'lpLQ07gEFQXStPxl8L3nu2UkvTcx3EgF',
+        'HOST': 'dpg-d5e28q75r7bs73c9qhr0-a.oregon-postgres.render.com',
         'PORT': '5432',
     }
 }
