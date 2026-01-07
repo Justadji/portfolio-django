@@ -59,16 +59,17 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 # Base de données PostgreSQL
+import os
+import dj_database_url
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgresql-duerf',
-        'USER': 'postgresql_duerf_user',
-        'PASSWORD': 'lpLQ07gEFQXStPxl8L3nu2UkvTcx3EgF',
-        'HOST': 'dpg-d5e28q75r7bs73c9qhr0-a.oregon-postgres.render.com',
-        'PORT': '5432',
-    }
+    "default": dj_database_url.parse(
+        os.environ["DATABASE_URL"],
+        conn_max_age=600,
+        ssl_require=True,
+    )
 }
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
