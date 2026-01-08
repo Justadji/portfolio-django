@@ -9,10 +9,18 @@ import cloudinary.api
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-(xb_dgan!j7s=l*%xvp^dx2%1vr@n8ul-fjh08tgog47c9kb2h'
-#DEBUG = os.getenv('DEBUG', 'False') == 'True'
-DEBUG = True
 
-import os
+DEBUG = os.getenv("DEBUG", "False") == "True"
+
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+   # SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+else:
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
 
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 
@@ -26,6 +34,7 @@ INSTALLED_APPS = [
     'portfolio',
     'cloudinary_storage',
     'cloudinary',
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -62,16 +71,32 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Base de données PostgreSQL
 import os
+from pathlib import Path
 import dj_database_url
 
-DATABASES = {
-    "default": dj_database_url.parse(
-        os.environ["DATABASE_URL"],
-        conn_max_age=600,
-        ssl_require=True,
-    )
-}
+BASE_DIR = Path(__file__).resolve().parent.parent
 
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
+if DATABASE_URL:
+    DATABASES = {
+        "default": dj_database_url.parse(
+            DATABASE_URL,
+            conn_max_age=600,
+            ssl_require=True,
+        )
+    }
+else:
+    # fallback LOCAL
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
+
+
+DATABASES["default"]["CONN_MAX_AGE"] = 60
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -106,3 +131,4 @@ EMAIL_PORT = config('EMAIL_PORT', cast=int)
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+
