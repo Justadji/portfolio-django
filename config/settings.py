@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-(xb_dgan!j7s=l*%xvp^dx2%1vr@n8ul-fjh08tgog47c9kb2h'
 
-DEBUG = os.getenv("DEBUG", "False") == "True"
+DEBUG = os.getenv("DEBUG", "True") == "True"
 
 if not DEBUG:
     SECURE_SSL_REDIRECT = True

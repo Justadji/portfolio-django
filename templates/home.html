@@ -9,12 +9,12 @@
             <div class="slide active">
                 <h1>{{ contenu.titre_slide_1 }}</h1>
                 <p>{{ contenu.texte_slide_1 }}</p>
-                <a href="{% url 'commander' %}" class="btn-primary">Commander</a>
+                <a href="{% url 'commander' %}" class="btn-primary">Demander un devis</a>
             </div>
             <div class="slide">
                 <h1>{{ contenu.titre_slide_2 }}</h1>
                 <p>{{ contenu.texte_slide_2 }}</p>
-                <a href="{% url 'galerie' %}" class="btn-secondary">Voir la Galerie</a>
+                <a href="{% url 'galerie' %}" class="btn-secondary">Voir la galerie</a>
             </div>
         </div>
     </div>
@@ -67,7 +67,12 @@
         {% endif %}
         <div class="about-text">
             <h2>À propos de moi</h2>
-            <p>Je suis un portraitiste passionné par l’art de capturer les émotions et les traits uniques de chaque personne...</p>
+            <p>Je suis un portraitiste passionné par l’art de capturer les émotions et les traits uniques de chaque personne.</p>
+            <ul class="about-highlights">
+                <li>Portraits sur mesure, du croquis au rendu final.</li>
+                <li>Textures vivantes et finitions soignées.</li>
+                <li>Accompagnement personnalisé à chaque étape.</li>
+            </ul>
         </div>
     </div>
 </section>

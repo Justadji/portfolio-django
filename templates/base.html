@@ -5,27 +5,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}I'mDuerf{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script defer src="https://unpkg.com/scrollreveal"></script>
     <script defer src="{% static 'js/script.js' %}"></script>
-    {% load static %}
     <link rel="manifest" href="{% static 'manifest.json' %}">
-    <meta name="theme-color" content="#000000">
+    <meta name="theme-color" content="#0f0f0f">
     <link rel="icon" href="{% static 'images/icon-192.png' %}">
 </head>
 
-<script src="https://unpkg.com/scrollreveal"></script>
-
-<body>
+<body data-sw-url="{% static 'service-worker.js' %}">
 <header class="sticky-header">
     <nav class="navbar">
-        <div class="logo">ImDuerf</div>
+        <a class="logo" href="{% url 'home' %}">ImDuerf</a>
         <div class="menu" id="nav-links">
             <a href="{% url 'home' %}">Accueil</a>
             <a href="{% url 'galerie' %}">Galerie</a>
             <a href="{% url 'commander' %}">Commander</a>
             <a href="{% url 'contact' %}">Contact</a>
         </div>
-        <div class="burger" id="burger">
+        <div class="burger" id="burger" aria-label="Ouvrir le menu" role="button">
             <div class="line1"></div>
             <div class="line2"></div>
             <div class="line3"></div>
@@ -33,7 +34,7 @@
     </nav>
 </header>
 
-<main>
+<main class="main-content">
     {% block content %}
     {% endblock %}
 </main>
@@ -53,33 +54,33 @@
 </section>
 
 <footer>
-    <p>© 2025 - NJAB</p>
-    <div class="social-icons">
-        <a href="#"><img src="{% static 'images/facebook.png' %}" alt="Facebook"></a>
-        <a href="#"><img src="{% static 'images/instagram.png' %}" alt="Instagram"></a>
-        <a href="#"><img src="{% static 'images/x.png' %}" alt="X"></a>
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <div class="footer-logo">ImDuerf</div>
+            <p>Art sur mesure, textures vivantes, pièces uniques.</p>
+        </div>
+        <div class="footer-links">
+            <a href="{% url 'home' %}">Accueil</a>
+            <a href="{% url 'galerie' %}">Galerie</a>
+            <a href="{% url 'commander' %}">Commander</a>
+            <a href="{% url 'contact' %}">Contact</a>
+        </div>
+        <div class="footer-cta">
+            <p>Parlons de votre prochain projet.</p>
+            <a class="footer-button" href="{% url 'contact' %}">Demander un devis</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2025 - NJAB</p>
+        <div class="social-icons">
+            <a href="#"><img src="{% static 'images/facebook.png' %}" alt="Facebook"></a>
+            <a href="#"><img src="{% static 'images/instagram.png' %}" alt="Instagram"></a>
+            <a href="#"><img src="{% static 'images/x.png' %}" alt="X"></a>
+        </div>
     </div>
 </footer>
 
-
-<script src="https://unpkg.com/scrollreveal"></script>
-<script>
-    ScrollReveal().reveal('section', { 
-        distance: '50px',
-        duration: 1000,
-        easing: 'ease-in-out',
-        origin: 'bottom',
-        interval: 200
-    });
-
-    if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register("{% static 'service-worker.js' %}")
-        .then(() => console.log("Service Worker enregistré."))
-        .catch(err => console.error("Erreur SW:", err));
-    }
-</script>
-
-<button onclick="topFunction()" id="backToTop" title="Haut">↑</button>
+<button id="backToTop" title="Haut" aria-label="Retour en haut">Top</button>
 
 </body>
 </html>
