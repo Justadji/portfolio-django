@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Forum - {{ topic.titre }}{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="section-inner">
+        <p>
+            <a href="{% url 'forum_index' %}">Forum</a> /
+            <a href="{% url 'forum_category' categorie.id %}">{{ categorie.nom }}</a>
+        </p>
+
+        <h1>{{ topic.titre }}</h1>
+        <p>Par {{ topic.auteur_nom }} - {{ topic.created_at|date:"d/m/Y H:i" }}</p>
+
+        <div class="forum-list">
+            {% for p in posts %}
+            <div class="forum-card">
+                <p><strong>{{ p.auteur_nom }}</strong> - {{ p.created_at|date:"d/m/Y H:i" }}</p>
+                <p>{{ p.message|linebreaks }}</p>
+            </div>
+            {% empty %}
+            <p>Aucun message.</p>
+            {% endfor %}
+        </div>
+
+        <hr>
+
+        <h2>Repondre</h2>
+        <form method="post" class="form-style">
+            {% csrf_token %}
+            {{ reply_form.as_p }}
+            <button type="submit" class="btn btn-primary">Envoyer</button>
+        </form>
+    </div>
+</section>
+{% endblock %}

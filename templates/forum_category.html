@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Forum - {{ categorie.nom }}{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="section-inner">
+        <p><a href="{% url 'forum_index' %}">Retour au forum</a></p>
+        <h1>{{ categorie.nom }}</h1>
+        {% if categorie.description %}
+        <p>{{ categorie.description }}</p>
+        {% endif %}
+
+        <div class="forum-list">
+            {% for t in topics %}
+            <div class="forum-card">
+                <h3>
+                    <a href="{% url 'forum_topic' categorie.id t.id %}">{{ t.titre }}</a>
+                </h3>
+                <p>Par {{ t.auteur_nom }} - {{ t.created_at|date:"d/m/Y H:i" }}</p>
+                <p>{{ t.posts.count }} message(s)</p>
+            </div>
+            {% empty %}
+            <p>Aucun sujet dans cette categorie.</p>
+            {% endfor %}
+        </div>
+
+        <hr>
+
+        <h2>Creer un nouveau sujet</h2>
+        <form method="post" class="form-style">
+            {% csrf_token %}
+            {{ topic_form.as_p }}
+            <button type="submit" class="btn btn-primary">Publier</button>
+        </form>
+        <p style="margin-top: 10px; opacity: 0.8;">
+            Apres creation, ouvrez le sujet pour publier votre message.
+        </p>
+    </div>
+</section>
+{% endblock %}

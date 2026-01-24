@@ -850,13 +850,13 @@ footer .social-icons a img {
 
 /* Modern theme overrides */
 :root {
-    --bg: #0f0f0f;
-    --bg-alt: #151515;
-    --card: #1b1b1b;
-    --text: #f4f1ed;
-    --muted: #b9b3aa;
-    --accent: #d2a66b;
-    --accent-strong: #e2b576;
+    --bg: #161616;
+    --bg-alt: #222222;
+    --card: #2a2a2a;
+    --text: #f7f4ef;
+    --muted: #c3bdb3;
+    --accent: #f0c27b;
+    --accent-strong: #ffd08a;
     --line: rgba(255, 255, 255, 0.08);
     --shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
     --font-body: "Manrope", "Segoe UI", sans-serif;
@@ -873,8 +873,8 @@ body {
     margin: 0;
     font-family: var(--font-body);
     color: var(--text);
-    background: radial-gradient(circle at 10% 10%, rgba(210, 166, 107, 0.12), transparent 40%),
-        radial-gradient(circle at 90% 30%, rgba(255, 255, 255, 0.08), transparent 45%),
+    background: radial-gradient(circle at 10% 10%, rgba(240, 194, 123, 0.18), transparent 42%),
+        radial-gradient(circle at 90% 25%, rgba(255, 255, 255, 0.12), transparent 48%),
         var(--bg);
     line-height: 1.6;
 }
@@ -896,6 +896,14 @@ h1, h2, h3 {
     letter-spacing: 0.5px;
 }
 
+a {
+    color: var(--text);
+}
+
+a:hover {
+    color: var(--accent);
+}
+
 img {
     max-width: 100%;
     height: auto;
@@ -903,11 +911,13 @@ img {
 }
 
 .main-content {
-    padding-top: 40px;
+    padding-top: 6px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0));
 }
 
 section {
-    padding: 80px 20px;
+    padding: 0px 30px;
+    background: rgba(255, 255, 255, 0.04);
 }
 
 .container {
@@ -923,7 +933,7 @@ section {
     max-width: 640px;
     margin: 60px auto;
     padding: 32px;
-    background: var(--card);
+    background: rgba(255, 255, 255, 0.06);
     color: var(--text);
     border: 1px solid var(--line);
     box-shadow: var(--shadow);
@@ -931,7 +941,7 @@ section {
 }
 
 .sticky-header {
-    background: rgba(10, 10, 10, 0.7);
+    background: rgba(20, 20, 20, 0.8);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--line);
 }

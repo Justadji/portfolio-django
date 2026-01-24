@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Forum{% endblock %}
+
+{% block content %}
+<section class="section">
+    <div class="section-inner">
+        <h1>Forum</h1>
+        <p>Espace de discussion pour les visiteurs.</p>
+
+        <div class="forum-list">
+            {% for c in categories %}
+            <div class="forum-card">
+                <h3>
+                    <a href="{% url 'forum_category' c.id %}">{{ c.nom }}</a>
+                </h3>
+                {% if c.description %}
+                <p>{{ c.description }}</p>
+                {% endif %}
+                <p><strong>{{ c.topics.count }}</strong> sujet(s)</p>
+            </div>
+            {% empty %}
+            <p>Aucune categorie pour le moment.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

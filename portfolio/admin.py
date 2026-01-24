@@ -7,6 +7,9 @@ from .models import (
     PageContact,
     MessageContact,
     Testimonial,
+    ForumCategory,
+    ForumTopic,
+    ForumPost,
 )
 
 @admin.register(Categorie)
@@ -51,4 +54,23 @@ class TestimonialAdmin(admin.ModelAdmin):
     list_display = ("nom", "date")
     search_fields = ("nom", "texte")
 
+
+@admin.register(ForumCategory)
+class ForumCategoryAdmin(admin.ModelAdmin):
+    list_display = ("nom", "created_at")
+    search_fields = ("nom", "description")
+
+
+@admin.register(ForumTopic)
+class ForumTopicAdmin(admin.ModelAdmin):
+    list_display = ("titre", "categorie", "auteur_nom", "created_at", "updated_at")
+    list_filter = ("categorie", "created_at")
+    search_fields = ("titre", "auteur_nom", "auteur_email")
+
+
+@admin.register(ForumPost)
+class ForumPostAdmin(admin.ModelAdmin):
+    list_display = ("topic", "auteur_nom", "created_at")
+    list_filter = ("created_at",)
+    search_fields = ("auteur_nom", "auteur_email", "message")
 

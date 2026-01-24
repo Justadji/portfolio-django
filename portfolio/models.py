@@ -91,3 +91,50 @@ class Testimonial(models.Model):
     def __str__(self):
         return f"{self.nom} - {self.texte[:30]}..."
 
+
+class ForumCategory(models.Model):
+    nom = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['nom']
+        verbose_name = "CatÃ©gorie du forum"
+        verbose_name_plural = "CatÃ©gories du forum"
+
+    def __str__(self):
+        return self.nom
+
+
+class ForumTopic(models.Model):
+    categorie = models.ForeignKey(ForumCategory, on_delete=models.CASCADE, related_name='topics')
+    titre = models.CharField(max_length=200)
+    auteur_nom = models.CharField(max_length=100)
+    auteur_email = models.EmailField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-updated_at']
+        verbose_name = "Sujet du forum"
+        verbose_name_plural = "Sujets du forum"
+
+    def __str__(self):
+        return self.titre
+
+
+class ForumPost(models.Model):
+    topic = models.ForeignKey(ForumTopic, on_delete=models.CASCADE, related_name='posts')
+    auteur_nom = models.CharField(max_length=100)
+    auteur_email = models.EmailField(blank=True, null=True)
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['created_at']
+        verbose_name = "Message du forum"
+        verbose_name_plural = "Messages du forum"
+
+    def __str__(self):
+        return f"{self.auteur_nom} - {self.message[:30]}..."
+

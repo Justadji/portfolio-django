@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib import messages
-from .forms import CommandeForm, ContactForm
+from .forms import CommandeForm, ContactForm, ForumTopicForm, ForumPostForm
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import Oeuvre, Commande, Categorie, PageAccueil, PageContact, Testimonial
+from .models import Oeuvre, Commande, Categorie, PageAccueil, PageContact, Testimonial, ForumCategory, ForumTopic, ForumPost
 from django.core.mail import EmailMultiAlternatives, EmailMessage
 from django.template.loader import render_to_string
+from django.utils import timezone
 
 def base(request):
     testimonials = Testimonial.objects.filter(visible=True)
@@ -162,4 +163,55 @@ def envoyer_email_confirmation(commande):
     email = EmailMultiAlternatives(subject, text_content, from_email, to_email)
     email.attach_alternative(html_content, "text/html")
     email.send()
+
+
+def forum_index(request):
+    categories = ForumCategory.objects.all()
+    return render(request, 'forum_index.html', {'categories': categories})
+
+
+def forum_category(request, categorie_id):
+    categorie = get_object_or_404(ForumCategory, pk=categorie_id)
+    topics = ForumTopic.objects.filter(categorie=categorie).order_by('-updated_at')
+
+    topic_form = ForumTopicForm()
+
+    if request.method == "POST":
+        topic_form = ForumTopicForm(request.POST)
+        if topic_form.is_valid():
+            topic = topic_form.save(commit=False)
+            topic.categorie = categorie
+            topic.save()
+
+            return redirect('forum_topic', categorie_id=categorie.id, topic_id=topic.id)
+
+    return render(request, 'forum_category.html', {
+        'categorie': categorie,
+        'topics': topics,
+        'topic_form': topic_form,
+    })
+
+
+def forum_topic(request, categorie_id, topic_id):
+    categorie = get_object_or_404(ForumCategory, pk=categorie_id)
+    topic = get_object_or_404(ForumTopic, pk=topic_id, categorie=categorie)
+    posts = ForumPost.objects.filter(topic=topic).order_by('created_at')
+
+    reply_form = ForumPostForm()
+    if request.method == "POST":
+        reply_form = ForumPostForm(request.POST)
+        if reply_form.is_valid():
+            reply = reply_form.save(commit=False)
+            reply.topic = topic
+            reply.save()
+            topic.updated_at = timezone.now()
+            topic.save(update_fields=['updated_at'])
+            return redirect('forum_topic', categorie_id=categorie.id, topic_id=topic.id)
+
+    return render(request, 'forum_topic.html', {
+        'categorie': categorie,
+        'topic': topic,
+        'posts': posts,
+        'reply_form': reply_form,
+    })
 
