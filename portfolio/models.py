@@ -125,9 +125,12 @@ class ForumTopic(models.Model):
 
 class ForumPost(models.Model):
     topic = models.ForeignKey(ForumTopic, on_delete=models.CASCADE, related_name='posts')
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='replies')
     auteur_nom = models.CharField(max_length=100)
     auteur_email = models.EmailField(blank=True, null=True)
     message = models.TextField()
+    likes_count = models.PositiveIntegerField(default=0)
+    is_hidden = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -137,4 +140,21 @@ class ForumPost(models.Model):
 
     def __str__(self):
         return f"{self.auteur_nom} - {self.message[:30]}..."
+
+
+class ForumReport(models.Model):
+    post = models.ForeignKey(ForumPost, on_delete=models.CASCADE, related_name='reports')
+    motif = models.CharField(max_length=200)
+    details = models.TextField(blank=True)
+    email = models.EmailField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_resolved = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = "Signalement"
+        verbose_name_plural = "Signalements"
+
+    def __str__(self):
+        return f"Signalement {self.post_id} - {self.motif}"
 

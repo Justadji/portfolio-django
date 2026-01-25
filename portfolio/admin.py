@@ -10,6 +10,7 @@ from .models import (
     ForumCategory,
     ForumTopic,
     ForumPost,
+    ForumReport,
 )
 
 @admin.register(Categorie)
@@ -70,7 +71,13 @@ class ForumTopicAdmin(admin.ModelAdmin):
 
 @admin.register(ForumPost)
 class ForumPostAdmin(admin.ModelAdmin):
-    list_display = ("topic", "auteur_nom", "created_at")
-    list_filter = ("created_at",)
+    list_display = ("topic", "auteur_nom", "created_at", "likes_count", "is_hidden")
+    list_filter = ("created_at", "is_hidden")
     search_fields = ("auteur_nom", "auteur_email", "message")
 
+
+@admin.register(ForumReport)
+class ForumReportAdmin(admin.ModelAdmin):
+    list_display = ("post", "motif", "created_at", "is_resolved")
+    list_filter = ("is_resolved", "created_at")
+    search_fields = ("motif", "details", "email")

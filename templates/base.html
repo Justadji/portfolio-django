@@ -98,5 +98,17 @@
     <img src="{% static 'images/whatsapp.png' %}" alt="WhatsApp">
 </a>
 
+<script>
+  document.addEventListener('click', function(e) {
+    const btn = e.target.closest('[data-toggle]');
+    if (!btn) return;
+    const id = btn.getAttribute('data-toggle');
+    const panel = document.getElementById(id);
+    if (panel) {
+      panel.hidden = !panel.hidden;
+    }
+  });
+</script>
+
 </body>
 </html>

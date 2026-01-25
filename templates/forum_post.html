@@ -1,0 +1,49 @@
+<div class="forum-card {% if post.is_hidden %}is-hidden{% endif %}">
+    <p class="forum-meta">
+        <span class="icon">&#128100;</span><strong>{{ post.auteur_nom }}</strong> - {{ post.created_at|date:"d/m/Y H:i" }}
+    </p>
+    {% if post.is_hidden %}
+        <p><em>Message masquÃ© par la modÃ©ration.</em></p>
+    {% else %}
+        <p>{{ post.message|linebreaks }}</p>
+    {% endif %}
+    <div class="forum-actions">
+        <form method="post" action="{% url 'forum_post_like' post.id %}">
+            {% csrf_token %}
+            <button type="submit" class="link-button">
+                <span class="icon">&#10084;</span>{{ post.likes_count }}
+            </button>
+        </form>
+        <button class="link-button" type="button" data-toggle="reply-{{ post.id }}">
+            <span class="icon">&#128172;</span>RÃ©pondre
+        </button>
+        <button class="link-button" type="button" data-toggle="report-{{ post.id }}">
+            <span class="icon">&#128681;</span>Signaler
+        </button>
+    </div>
+
+    <div class="reply-form" id="reply-{{ post.id }}" hidden>
+        <form method="post">
+            {% csrf_token %}
+            {{ reply_form.as_p }}
+            <input type="hidden" name="parent_id" value="{{ post.id }}">
+            <button type="submit" class="btn btn-primary">Publier</button>
+        </form>
+    </div>
+
+    <div class="report-form" id="report-{{ post.id }}" hidden>
+        <form method="post" action="{% url 'forum_post_report' post.id %}">
+            {% csrf_token %}
+            {{ report_form.as_p }}
+            <button type="submit" class="btn btn-secondary">Envoyer le signalement</button>
+        </form>
+    </div>
+
+    {% if post.replies.all %}
+    <div class="forum-replies">
+        {% for child in post.replies.all %}
+            {% include "forum_post.html" with post=child %}
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>

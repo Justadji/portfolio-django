@@ -1,5 +1,5 @@
 from django import forms
-from .models import Commande, MessageContact, ForumTopic, ForumPost
+from .models import Commande, MessageContact, ForumTopic, ForumPost, ForumReport
 
 class ContactForm(forms.ModelForm):
     class Meta:
@@ -47,5 +47,19 @@ class ForumPostForm(forms.ModelForm):
         }
         widgets = {
             'message': forms.Textarea(attrs={'rows': 4}),
+        }
+
+
+class ForumReportForm(forms.ModelForm):
+    class Meta:
+        model = ForumReport
+        fields = ['motif', 'details', 'email']
+        labels = {
+            'motif': 'Motif',
+            'details': 'Details (optionnel)',
+            'email': 'Votre email (optionnel)',
+        }
+        widgets = {
+            'details': forms.Textarea(attrs={'rows': 3}),
         }
 

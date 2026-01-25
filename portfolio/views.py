@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib import messages
-from .forms import CommandeForm, ContactForm, ForumTopicForm, ForumPostForm
+from .forms import CommandeForm, ContactForm, ForumTopicForm, ForumPostForm, ForumReportForm
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import Oeuvre, Commande, Categorie, PageAccueil, PageContact, Testimonial, ForumCategory, ForumTopic, ForumPost
+from .models import Oeuvre, Commande, Categorie, PageAccueil, PageContact, Testimonial, ForumCategory, ForumTopic, ForumPost, ForumReport
 from django.core.mail import EmailMultiAlternatives, EmailMessage
 from django.template.loader import render_to_string
 from django.utils import timezone
@@ -195,7 +195,7 @@ def forum_category(request, categorie_id):
 def forum_topic(request, categorie_id, topic_id):
     categorie = get_object_or_404(ForumCategory, pk=categorie_id)
     topic = get_object_or_404(ForumTopic, pk=topic_id, categorie=categorie)
-    posts = ForumPost.objects.filter(topic=topic).order_by('created_at')
+    posts = ForumPost.objects.filter(topic=topic, parent__isnull=True).order_by('created_at')
 
     reply_form = ForumPostForm()
     if request.method == "POST":
@@ -203,6 +203,9 @@ def forum_topic(request, categorie_id, topic_id):
         if reply_form.is_valid():
             reply = reply_form.save(commit=False)
             reply.topic = topic
+            parent_id = request.POST.get("parent_id")
+            if parent_id:
+                reply.parent = get_object_or_404(ForumPost, pk=parent_id, topic=topic)
             reply.save()
             topic.updated_at = timezone.now()
             topic.save(update_fields=['updated_at'])
@@ -213,5 +216,32 @@ def forum_topic(request, categorie_id, topic_id):
         'topic': topic,
         'posts': posts,
         'reply_form': reply_form,
+        'report_form': ForumReportForm(),
     })
+
+
+def forum_post_like(request, post_id):
+    post = get_object_or_404(ForumPost, pk=post_id)
+    if not request.session.session_key:
+        request.session.create()
+
+    liked = request.session.get('liked_posts', [])
+    if post_id not in liked:
+        post.likes_count = post.likes_count + 1
+        post.save(update_fields=['likes_count'])
+        liked.append(post_id)
+        request.session['liked_posts'] = liked
+
+    return redirect('forum_topic', categorie_id=post.topic.categorie_id, topic_id=post.topic_id)
+
+
+def forum_post_report(request, post_id):
+    post = get_object_or_404(ForumPost, pk=post_id)
+    if request.method == "POST":
+        form = ForumReportForm(request.POST)
+        if form.is_valid():
+            report = form.save(commit=False)
+            report.post = post
+            report.save()
+    return redirect('forum_topic', categorie_id=post.topic.categorie_id, topic_id=post.topic_id)
 

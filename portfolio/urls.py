@@ -14,4 +14,6 @@ urlpatterns = [
     path('forum/', views.forum_index, name='forum_index'),
     path('forum/<int:categorie_id>/', views.forum_category, name='forum_category'),
     path('forum/<int:categorie_id>/topic/<int:topic_id>/', views.forum_topic, name='forum_topic'),
+    path('forum/post/<int:post_id>/like/', views.forum_post_like, name='forum_post_like'),
+    path('forum/post/<int:post_id>/report/', views.forum_post_report, name='forum_post_report'),
 ]

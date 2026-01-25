@@ -14,10 +14,7 @@
 
         <div class="forum-list">
             {% for p in posts %}
-            <div class="forum-card">
-                <p class="forum-meta"><span class="icon">&#128100;</span><strong>{{ p.auteur_nom }}</strong> - {{ p.created_at|date:"d/m/Y H:i" }}</p>
-                <p>{{ p.message|linebreaks }}</p>
-            </div>
+                {% include "forum_post.html" with post=p %}
             {% empty %}
             <p>Aucun message.</p>
             {% endfor %}
@@ -25,7 +22,7 @@
 
         <hr>
 
-        <h2><span class="icon">&#9993;</span>Repondre</h2>
+        <h2><span class="icon">&#9993;</span>Repondre au sujet</h2>
         <form method="post" class="form-style">
             {% csrf_token %}
             {{ reply_form.as_p }}

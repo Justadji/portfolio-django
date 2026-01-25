@@ -981,6 +981,44 @@ section:nth-of-type(even) {
     color: var(--accent);
 }
 
+.forum-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.link-button {
+    background: transparent;
+    border: none;
+    color: var(--text);
+    cursor: pointer;
+    padding: 0;
+    font: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.link-button:hover {
+    color: var(--accent);
+}
+
+.forum-replies {
+    margin-top: 12px;
+    padding-left: 16px;
+    border-left: 1px dashed var(--line);
+}
+
+.reply-form,
+.report-form {
+    margin-top: 12px;
+}
+
+.forum-card.is-hidden {
+    opacity: 0.6;
+}
+
 .cta-strip {
     padding: 24px 20px;
     background: rgba(255, 255, 255, 0.06);
