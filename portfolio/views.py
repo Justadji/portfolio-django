@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib import messages
-from .forms import CommandeForm, ContactForm, ForumTopicForm, ForumPostForm, ForumReportForm
+from .forms import CommandeForm, ContactForm, ForumTopicForm, ForumPostForm, ForumReportForm, HoneypotForm
 from django.core.mail import send_mail
 from django.conf import settings
 from .models import Oeuvre, Commande, Categorie, PageAccueil, PageContact, Testimonial, ForumCategory, ForumTopic, ForumPost, ForumReport
@@ -200,13 +200,19 @@ def forum_topic(request, categorie_id, topic_id):
     reply_form = ForumPostForm()
     if request.method == "POST":
         reply_form = ForumPostForm(request.POST)
-        if reply_form.is_valid():
+        hp_form = HoneypotForm(request.POST)
+        if reply_form.is_valid() and hp_form.is_valid() and not hp_form.cleaned_data.get("hp_field"):
+            last_post_ts = request.session.get("forum_last_post_ts")
+            now_ts = int(timezone.now().timestamp())
+            if last_post_ts and now_ts - last_post_ts < 15:
+                return redirect('forum_topic', categorie_id=categorie.id, topic_id=topic.id)
             reply = reply_form.save(commit=False)
             reply.topic = topic
             parent_id = request.POST.get("parent_id")
             if parent_id:
                 reply.parent = get_object_or_404(ForumPost, pk=parent_id, topic=topic)
             reply.save()
+            request.session["forum_last_post_ts"] = now_ts
             topic.updated_at = timezone.now()
             topic.save(update_fields=['updated_at'])
             return redirect('forum_topic', categorie_id=categorie.id, topic_id=topic.id)
@@ -239,9 +245,15 @@ def forum_post_report(request, post_id):
     post = get_object_or_404(ForumPost, pk=post_id)
     if request.method == "POST":
         form = ForumReportForm(request.POST)
-        if form.is_valid():
+        hp_form = HoneypotForm(request.POST)
+        if form.is_valid() and hp_form.is_valid() and not hp_form.cleaned_data.get("hp_field"):
+            last_report_ts = request.session.get("forum_last_report_ts")
+            now_ts = int(timezone.now().timestamp())
+            if last_report_ts and now_ts - last_report_ts < 30:
+                return redirect('forum_topic', categorie_id=post.topic.categorie_id, topic_id=post.topic_id)
             report = form.save(commit=False)
             report.post = post
             report.save()
+            request.session["forum_last_report_ts"] = now_ts
     return redirect('forum_topic', categorie_id=post.topic.categorie_id, topic_id=post.topic_id)
 

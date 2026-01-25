@@ -39,7 +39,7 @@ class ForumTopicForm(forms.ModelForm):
 class ForumPostForm(forms.ModelForm):
     class Meta:
         model = ForumPost
-        fields = ['auteur_nom', 'auteur_email', 'message']
+        fields = ['auteur_nom', 'auteur_email', 'message',]
         labels = {
             'auteur_nom': 'Votre nom',
             'auteur_email': 'Votre email (optionnel)',
@@ -62,4 +62,8 @@ class ForumReportForm(forms.ModelForm):
         widgets = {
             'details': forms.Textarea(attrs={'rows': 3}),
         }
+
+
+class HoneypotForm(forms.Form):
+    hp_field = forms.CharField(required=False)
 

@@ -1019,6 +1019,14 @@ section:nth-of-type(even) {
     opacity: 0.6;
 }
 
+.hp-field {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
 .cta-strip {
     padding: 24px 20px;
     background: rgba(255, 255, 255, 0.06);
