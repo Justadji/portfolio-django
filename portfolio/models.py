@@ -99,8 +99,8 @@ class ForumCategory(models.Model):
 
     class Meta:
         ordering = ['nom']
-        verbose_name = "CatÃ©gorie du forum"
-        verbose_name_plural = "CatÃ©gories du forum"
+        verbose_name = "Cat\u00e9gorie du forum"
+        verbose_name_plural = "Cat\u00e9gories du forum"
 
     def __str__(self):
         return self.nom

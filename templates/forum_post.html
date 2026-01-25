@@ -3,7 +3,7 @@
         <span class="icon">&#128100;</span><strong>{{ post.auteur_nom }}</strong> - {{ post.created_at|date:"d/m/Y H:i" }}
     </p>
     {% if post.is_hidden %}
-        <p><em>Message masquÃ© par la modÃ©ration.</em></p>
+        <p><em>Message masqu&eacute; par la mod&eacute;ration.</em></p>
     {% else %}
         <p>{{ post.message|linebreaks }}</p>
     {% endif %}
