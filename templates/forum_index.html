@@ -11,12 +11,12 @@
             {% for c in categories %}
             <div class="forum-card">
                 <h3>
-                    <a href="{% url 'forum_category' c.id %}">{{ c.nom }}</a>
+                    <a href="{% url 'forum_category' c.id %}"><span class="icon">&#128193;</span>{{ c.nom }}</a>
                 </h3>
                 {% if c.description %}
                 <p>{{ c.description }}</p>
                 {% endif %}
-                <p><strong>{{ c.topics.count }}</strong> sujet(s)</p>
+                <p class="forum-meta"><span class="icon">&#128172;</span><strong>{{ c.topics.count }}</strong> sujet(s)</p>
             </div>
             {% empty %}
             <p>Aucune categorie pour le moment.</p>

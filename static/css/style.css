@@ -336,6 +336,12 @@ a.logo:focus {
 
     .testimonials-container {
         flex-direction: column;
+        align-items: center;
+    }
+
+    .testimonial {
+        width: 100%;
+        max-width: 360px;
     }
 
     .navbar .menu {
@@ -920,6 +926,10 @@ section {
     background: rgba(255, 255, 255, 0.04);
 }
 
+section:nth-of-type(even) {
+    background: rgba(255, 255, 255, 0.08);
+}
+
 .container {
     max-width: 1100px;
     margin: 0 auto;
@@ -938,6 +948,98 @@ section {
     border: 1px solid var(--line);
     box-shadow: var(--shadow);
     border-radius: 16px;
+}
+
+.forum-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+}
+
+.forum-card {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+}
+
+.forum-card h3 {
+    margin-top: 0;
+}
+
+.forum-meta {
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
+.icon {
+    display: inline-flex;
+    width: 1.2em;
+    justify-content: center;
+    margin-right: 6px;
+    color: var(--accent);
+}
+
+.cta-strip {
+    padding: 24px 20px;
+    background: rgba(255, 255, 255, 0.06);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+}
+
+.cta-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.cta-inner h2 {
+    margin: 0 0 6px;
+}
+
+.cta-inner p {
+    margin: 0;
+    color: var(--muted);
+}
+
+.whatsapp-fab {
+    position: fixed;
+    right: 20px;
+    bottom: 90px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #25d366;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1001;
+}
+
+.whatsapp-fab img {
+    width: 28px;
+    height: 28px;
+}
+
+.mini-faq {
+    margin-top: 24px;
+    padding: 18px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+}
+
+.mini-faq h3 {
+    margin: 0 0 12px;
+}
+
+.mini-faq .faq-item + .faq-item {
+    margin-top: 10px;
 }
 
 .sticky-header {
@@ -1233,5 +1335,10 @@ footer {
     .navbar .menu {
         background-color: rgba(10, 10, 10, 0.95);
         border: 1px solid var(--line);
+    }
+
+    .cta-inner {
+        flex-direction: column;
+        align-items: flex-start;
     }
 }

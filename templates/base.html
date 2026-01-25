@@ -40,6 +40,16 @@
     {% endblock %}
 </main>
 
+<section class="cta-strip">
+    <div class="cta-inner">
+        <div>
+            <h2>Prêt à transformer votre photo en œuvre d’art ?</h2>
+            <p>Expliquez votre idée, je vous réponds rapidement.</p>
+        </div>
+        <a class="btn btn-primary" href="{% url 'commander' %}">Commander un portrait</a>
+    </div>
+</section>
+
 <section class="testimonials">
     <h2>Ce que disent mes clients</h2>
     <div class="testimonials-container">
@@ -84,6 +94,9 @@
 </footer>
 
 <button id="backToTop" title="Haut" aria-label="Retour en haut">Top</button>
+<a class="whatsapp-fab" href="https://wa.me/242065319666" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+    <img src="{% static 'images/whatsapp.png' %}" alt="WhatsApp">
+</a>
 
 </body>
 </html>

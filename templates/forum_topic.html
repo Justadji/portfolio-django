@@ -9,13 +9,13 @@
             <a href="{% url 'forum_category' categorie.id %}">{{ categorie.nom }}</a>
         </p>
 
-        <h1>{{ topic.titre }}</h1>
-        <p>Par {{ topic.auteur_nom }} - {{ topic.created_at|date:"d/m/Y H:i" }}</p>
+        <h1><span class="icon">&#128221;</span>{{ topic.titre }}</h1>
+        <p class="forum-meta"><span class="icon">&#128100;</span>Par {{ topic.auteur_nom }} - {{ topic.created_at|date:"d/m/Y H:i" }}</p>
 
         <div class="forum-list">
             {% for p in posts %}
             <div class="forum-card">
-                <p><strong>{{ p.auteur_nom }}</strong> - {{ p.created_at|date:"d/m/Y H:i" }}</p>
+                <p class="forum-meta"><span class="icon">&#128100;</span><strong>{{ p.auteur_nom }}</strong> - {{ p.created_at|date:"d/m/Y H:i" }}</p>
                 <p>{{ p.message|linebreaks }}</p>
             </div>
             {% empty %}
@@ -25,7 +25,7 @@
 
         <hr>
 
-        <h2>Repondre</h2>
+        <h2><span class="icon">&#9993;</span>Repondre</h2>
         <form method="post" class="form-style">
             {% csrf_token %}
             {{ reply_form.as_p }}

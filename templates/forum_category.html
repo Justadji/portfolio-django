@@ -14,10 +14,10 @@
             {% for t in topics %}
             <div class="forum-card">
                 <h3>
-                    <a href="{% url 'forum_topic' categorie.id t.id %}">{{ t.titre }}</a>
+                    <a href="{% url 'forum_topic' categorie.id t.id %}"><span class="icon">&#128221;</span>{{ t.titre }}</a>
                 </h3>
-                <p>Par {{ t.auteur_nom }} - {{ t.created_at|date:"d/m/Y H:i" }}</p>
-                <p>{{ t.posts.count }} message(s)</p>
+                <p class="forum-meta"><span class="icon">&#128100;</span>Par {{ t.auteur_nom }} - {{ t.created_at|date:"d/m/Y H:i" }}</p>
+                <p class="forum-meta"><span class="icon">&#128172;</span>{{ t.posts.count }} message(s)</p>
             </div>
             {% empty %}
             <p>Aucun sujet dans cette categorie.</p>
@@ -26,7 +26,7 @@
 
         <hr>
 
-        <h2>Creer un nouveau sujet</h2>
+        <h2><span class="icon">&#10010;</span>Creer un nouveau sujet</h2>
         <form method="post" class="form-style">
             {% csrf_token %}
             {{ topic_form.as_p }}
