@@ -102,7 +102,10 @@
     }
 
     document.addEventListener('click', function(e) {
-      const replyButton = e.target.closest('[data-reply-post]');
+      const target = e.target.nodeType === 1 ? e.target : e.target.parentElement;
+      if (!target) return;
+
+      const replyButton = target.closest('[data-reply-post]');
       if (replyButton) {
         const postId = replyButton.getAttribute('data-reply-post');
         const author = replyButton.getAttribute('data-reply-author') || '';
@@ -115,7 +118,7 @@
         return;
       }
 
-      const reportButton = e.target.closest('[data-report-url]');
+      const reportButton = target.closest('[data-report-url]');
       if (reportButton) {
         const reportUrl = reportButton.getAttribute('data-report-url');
         const author = reportButton.getAttribute('data-report-author') || '';
@@ -125,8 +128,9 @@
         return;
       }
 
-      const closeTarget = e.target.closest('[data-modal-close]');
+      const closeTarget = target.closest('[data-modal-close]');
       if (closeTarget) {
+        e.preventDefault();
         const id = closeTarget.getAttribute('data-modal-close');
         const modal = document.getElementById(id);
         if (modal === replyModal) {
@@ -136,6 +140,7 @@
         } else if (modal === reportModal) {
           closeModal(reportModal);
         }
+        return;
       }
     });
 
