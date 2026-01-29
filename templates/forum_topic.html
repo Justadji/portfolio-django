@@ -12,7 +12,7 @@
         <h1><span class="icon">&#128221;</span>{{ topic.titre }}</h1>
         <p class="forum-meta"><span class="icon">&#128100;</span>Par {{ topic.auteur_nom }} - {{ topic.created_at|date:"d/m/Y H:i" }}</p>
 
-        <div class="forum-list">
+        <div class="forum-thread">
             {% for p in posts %}
                 {% include "forum_post.html" with post=p %}
             {% empty %}
@@ -22,13 +22,128 @@
 
         <hr>
 
-        <h2><span class="icon">&#9993;</span>R&eacute;pondre au sujet</h2>
-        <form method="post" class="form-style">
-            {% csrf_token %}
-            {{ reply_form.as_p }}
-            <input type="text" name="hp_field" class="hp-field" autocomplete="off" tabindex="-1" aria-hidden="true">
-            <button type="submit" class="btn btn-primary">Envoyer</button>
-        </form>
+        <div class="topic-reply" id="topic-reply">
+            <h2 id="reply-heading"><span class="icon">&#9993;</span>R&eacute;pondre au sujet</h2>
+            <div class="reply-context" id="reply-context" hidden>
+                <span>R&eacute;ponse &agrave; <strong id="reply-context-name"></strong></span>
+                <button type="button" class="link-button" id="reply-context-clear">Annuler</button>
+            </div>
+            <div id="reply-home"></div>
+            <div id="reply-form-wrapper">
+                <form method="post" class="form-style" id="reply-form">
+                    {% csrf_token %}
+                    {{ reply_form.as_p }}
+                    <input type="hidden" name="parent_id" id="reply-parent-id">
+                    <input type="text" name="hp_field" class="hp-field" autocomplete="off" tabindex="-1" aria-hidden="true">
+                    <button type="submit" class="btn btn-primary">Envoyer</button>
+                </form>
+            </div>
+        </div>
     </div>
 </section>
+
+<div class="modal" id="reply-modal" hidden>
+    <div class="modal-backdrop" data-modal-close="reply-modal"></div>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="reply-modal-title">
+        <div class="modal-header">
+            <h3 id="reply-modal-title">R&eacute;pondre</h3>
+            <button type="button" class="link-button" data-modal-close="reply-modal">Fermer</button>
+        </div>
+        <p class="modal-meta" id="reply-modal-meta"></p>
+        <div id="reply-modal-body"></div>
+    </div>
+</div>
+
+<div class="modal" id="report-modal" hidden>
+    <div class="modal-backdrop" data-modal-close="report-modal"></div>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="report-modal-title">
+        <div class="modal-header">
+            <h3 id="report-modal-title">Signaler un message</h3>
+            <button type="button" class="link-button" data-modal-close="report-modal">Fermer</button>
+        </div>
+        <p class="modal-meta" id="report-modal-meta"></p>
+        <form method="post" class="form-style" id="report-form">
+            {% csrf_token %}
+            {{ report_form.as_p }}
+            <input type="text" name="hp_field" class="hp-field" autocomplete="off" tabindex="-1" aria-hidden="true">
+            <button type="submit" class="btn btn-secondary">Envoyer le signalement</button>
+        </form>
+    </div>
+</div>
+
+<script>
+  (function() {
+    const replyModal = document.getElementById('reply-modal');
+    const replyModalBody = document.getElementById('reply-modal-body');
+    const replyModalMeta = document.getElementById('reply-modal-meta');
+    const replyFormWrapper = document.getElementById('reply-form-wrapper');
+    const replyHome = document.getElementById('reply-home');
+    const replyParentId = document.getElementById('reply-parent-id');
+    const replyContext = document.getElementById('reply-context');
+    const replyContextName = document.getElementById('reply-context-name');
+    const replyContextClear = document.getElementById('reply-context-clear');
+
+    const reportModal = document.getElementById('report-modal');
+    const reportModalMeta = document.getElementById('report-modal-meta');
+    const reportForm = document.getElementById('report-form');
+
+    function openModal(modal) {
+      modal.hidden = false;
+    }
+
+    function closeModal(modal) {
+      modal.hidden = true;
+    }
+
+    function resetReplyContext() {
+      replyParentId.value = '';
+      replyContext.hidden = true;
+      replyContextName.textContent = '';
+    }
+
+    document.addEventListener('click', function(e) {
+      const replyButton = e.target.closest('[data-reply-post]');
+      if (replyButton) {
+        const postId = replyButton.getAttribute('data-reply-post');
+        const author = replyButton.getAttribute('data-reply-author') || '';
+        replyParentId.value = postId;
+        replyContext.hidden = false;
+        replyContextName.textContent = '@' + author;
+        replyModalMeta.textContent = 'R\u00e9ponse \u00e0 @' + author;
+        replyModalBody.appendChild(replyFormWrapper);
+        openModal(replyModal);
+        return;
+      }
+
+      const reportButton = e.target.closest('[data-report-url]');
+      if (reportButton) {
+        const reportUrl = reportButton.getAttribute('data-report-url');
+        const author = reportButton.getAttribute('data-report-author') || '';
+        reportForm.setAttribute('action', reportUrl);
+        reportModalMeta.textContent = 'Vous signalez le message de @' + author;
+        openModal(reportModal);
+        return;
+      }
+
+      const closeTarget = e.target.closest('[data-modal-close]');
+      if (closeTarget) {
+        const id = closeTarget.getAttribute('data-modal-close');
+        const modal = document.getElementById(id);
+        if (modal === replyModal) {
+          closeModal(replyModal);
+          replyHome.appendChild(replyFormWrapper);
+          resetReplyContext();
+        } else if (modal === reportModal) {
+          closeModal(reportModal);
+        }
+      }
+    });
+
+    replyContextClear.addEventListener('click', function() {
+      resetReplyContext();
+    });
+
+    replyHome.appendChild(replyFormWrapper);
+  })();
+</script>
 {% endblock %}
