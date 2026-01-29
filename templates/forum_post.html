@@ -20,6 +20,19 @@
         <button class="link-button" type="button" data-reply-post="{{ post.id }}" data-reply-author="{{ post.auteur_nom }}">
             <span class="icon">&#128172;</span>R&eacute;pondre
         </button>
+        <button class="link-button" type="button" data-toggle="report-{{ post.id }}">
+            <span class="icon">&#128681;</span>Signaler
+        </button>
+    </div>
+
+    <div class="report-form" id="report-{{ post.id }}" hidden>
+        <form method="post" action="{% url 'forum_post_report' post.id %}">
+            {% csrf_token %}
+            {{ report_form.as_p }}
+            <input type="text" name="hp_field" class="hp-field" autocomplete="off" tabindex="-1" aria-hidden="true">
+            <button type="submit" class="btn btn-secondary">Envoyer le signalement</button>
+            <button type="button" class="btn btn-secondary" data-toggle="report-{{ post.id }}">Annuler</button>
+        </form>
     </div>
 
     {% if post.replies.all %}
