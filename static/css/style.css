@@ -1047,46 +1047,6 @@ section:nth-of-type(even) {
     color: var(--muted);
 }
 
-.modal {
-    position: fixed;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2000;
-}
-
-.modal-backdrop {
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.6);
-}
-
-.modal-card {
-    position: relative;
-    width: min(540px, 90vw);
-    max-height: 90vh;
-    overflow-y: auto;
-    background: var(--bg-alt);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 20px;
-    box-shadow: var(--shadow);
-    z-index: 1;
-}
-
-.modal-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-}
-
-.modal-meta {
-    margin: 8px 0 16px;
-    color: var(--muted);
-}
-
 .cta-strip {
     padding: 24px 20px;
     background: rgba(255, 255, 255, 0.06);
