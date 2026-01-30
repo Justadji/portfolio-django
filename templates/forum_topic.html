@@ -36,6 +36,7 @@
                     <input type="hidden" name="parent_id" id="reply-parent-id">
                     <input type="text" name="hp_field" class="hp-field" autocomplete="off" tabindex="-1" aria-hidden="true">
                     <button type="submit" class="btn btn-primary">Envoyer</button>
+                    <button type="button" class="btn btn-secondary" id="reply-move-back">Annuler</button>
                 </form>
             </div>
         </div>
@@ -44,16 +45,23 @@
 
 <script>
   (function() {
-    const replyForm = document.getElementById('reply-form');
     const replyParentId = document.getElementById('reply-parent-id');
     const replyContext = document.getElementById('reply-context');
     const replyContextName = document.getElementById('reply-context-name');
     const replyContextClear = document.getElementById('reply-context-clear');
+    const replyMoveBack = document.getElementById('reply-move-back');
+    const replyFormWrapper = document.getElementById('reply-form-wrapper');
+    const replyHome = document.getElementById('reply-home');
 
     function resetReplyContext() {
       replyParentId.value = '';
       replyContext.hidden = true;
       replyContextName.textContent = '';
+    }
+
+    function moveFormHome() {
+      replyHome.appendChild(replyFormWrapper);
+      resetReplyContext();
     }
 
     document.addEventListener('click', function(e) {
@@ -64,17 +72,36 @@
       if (replyButton) {
         const postId = replyButton.getAttribute('data-reply-post');
         const author = replyButton.getAttribute('data-reply-author') || '';
+        const card = replyButton.closest('.forum-card');
+        let slot = card ? card.querySelector('.reply-slot') : null;
+        if (!slot && card) {
+          slot = document.createElement('div');
+          slot.className = 'reply-slot';
+          card.appendChild(slot);
+        }
         replyParentId.value = postId;
         replyContext.hidden = false;
         replyContextName.textContent = '@' + author;
-        replyForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        if (slot) {
+          slot.appendChild(replyFormWrapper);
+          slot.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else {
+          replyHome.appendChild(replyFormWrapper);
+          replyFormWrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
         return;
       }
     });
 
     replyContextClear.addEventListener('click', function() {
-      resetReplyContext();
+      moveFormHome();
     });
+
+    replyMoveBack.addEventListener('click', function() {
+      moveFormHome();
+    });
+
+    replyHome.appendChild(replyFormWrapper);
   })();
 </script>
 {% endblock %}

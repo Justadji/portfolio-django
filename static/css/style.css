@@ -1021,6 +1021,10 @@ section:nth-of-type(even) {
     border-left: 3px solid var(--accent);
 }
 
+.reply-slot {
+    margin-top: 12px;
+}
+
 .reply-to {
     margin: 6px 0 10px;
     font-size: 0.9rem;
