@@ -25,6 +25,8 @@
         </button>
     </div>
 
+    <div class="reply-slot" id="reply-slot-{{ post.id }}"></div>
+
     <div class="report-form" id="report-{{ post.id }}" hidden>
         <form method="post" action="{% url 'forum_post_report' post.id %}">
             {% csrf_token %}
