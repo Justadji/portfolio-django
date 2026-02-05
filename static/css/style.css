@@ -1433,6 +1433,13 @@ body.theme-light .navbar .menu a {
     color: var(--text);
 }
 
+body.theme-light .navbar .logo,
+body.theme-light .navbar .logo:visited,
+body.theme-light .navbar .logo:hover,
+body.theme-light .navbar .logo:focus {
+    color: var(--text);
+}
+
 body.theme-light .cta-strip {
     background: rgba(0, 0, 0, 0.03);
 }
