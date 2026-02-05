@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block title %}Galerie{% endblock %}
 {% load static %}
+{% block body_class %}theme-light{% endblock %}
 
 {% block content %}
 <script src="https://cdn.tailwindcss.com"></script>
@@ -12,12 +13,12 @@
     <!-- Filtres par catégorie -->
     <div class="flex flex-wrap justify-center gap-3 mb-8">
       <a href="{% url 'galerie' %}"
-         class="px-4 py-2 rounded-full border border-white/10 {% if not categorie_active %}bg-[#d2a66b] text-[#1a1208]{% else %}bg-neutral-800 text-white{% endif %}">
+         class="px-4 py-2 rounded-full border border-black/10 {% if not categorie_active %}bg-[#d2a66b] text-[#1a1208]{% else %}bg-white text-slate-700{% endif %}">
         Toutes les catégories
       </a>
       {% for categorie in categories %}
       <a href="?categorie={{ categorie.id }}"
-         class="px-4 py-2 rounded-full border border-white/10 {% if categorie.id == categorie_active %}bg-[#d2a66b] text-[#1a1208]{% else %}bg-neutral-800 text-white{% endif %}">
+         class="px-4 py-2 rounded-full border border-black/10 {% if categorie.id == categorie_active %}bg-[#d2a66b] text-[#1a1208]{% else %}bg-white text-slate-700{% endif %}">
         {{ categorie.nom }}
       </a>
       {% endfor %}
@@ -26,7 +27,7 @@
     <!-- Galerie -->
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {% for oeuvre in oeuvres %}
-      <div class="bg-[#1b1b1b] border border-white/10 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
+      <div class="bg-white border border-black/10 rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
         <div class="relative group">
           <img src="{{ oeuvre.image.url }}" alt="{{ oeuvre.titre }}"
                class="w-full h-64 object-cover cursor-pointer group-hover:scale-105 transition-transform duration-300"
@@ -36,8 +37,8 @@
           </a>
         </div>
         <div class="p-4">
-          <h2 class="text-lg font-semibold">{{ oeuvre.titre }}</h2>
-          <p class="text-sm text-neutral-400">{{ oeuvre.description|truncatechars:100 }}</p>
+          <h2 class="text-lg font-semibold text-slate-900">{{ oeuvre.titre }}</h2>
+          <p class="text-sm text-slate-600">{{ oeuvre.description|truncatechars:100 }}</p>
         </div>
       </div>
       {% empty %}

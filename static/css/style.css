@@ -869,6 +869,25 @@ footer .social-icons a img {
     --font-display: "Playfair Display", "Times New Roman", serif;
 }
 
+body.theme-light {
+    --bg: #f7f7f5;
+    --bg-alt: #ffffff;
+    --card: #ffffff;
+    --text: #1a1a1a;
+    --muted: #585858;
+    --accent: #d2a66b;
+    --accent-strong: #e1b87b;
+    --line: rgba(0, 0, 0, 0.08);
+    --shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+    background: radial-gradient(circle at 10% 10%, rgba(210, 166, 107, 0.18), transparent 42%),
+        radial-gradient(circle at 90% 25%, rgba(0, 0, 0, 0.06), transparent 48%),
+        var(--bg);
+}
+
+body.theme-light::before {
+    opacity: 0.18;
+}
+
 *,
 *::before,
 *::after {
@@ -928,6 +947,18 @@ section {
 
 section:nth-of-type(even) {
     background: rgba(255, 255, 255, 0.08);
+}
+
+body.theme-light .main-content {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0));
+}
+
+body.theme-light section {
+    background: transparent;
+}
+
+body.theme-light section:nth-of-type(even) {
+    background: rgba(0, 0, 0, 0.02);
 }
 
 .container {
@@ -1391,6 +1422,62 @@ footer {
 
 #backToTop:hover {
     background-color: var(--accent-strong);
+}
+
+body.theme-light .sticky-header {
+    background: rgba(255, 255, 255, 0.92);
+    border-bottom: 1px solid var(--line);
+}
+
+body.theme-light .navbar .menu a {
+    color: var(--text);
+}
+
+body.theme-light .cta-strip {
+    background: rgba(0, 0, 0, 0.03);
+}
+
+body.theme-light .testimonials {
+    background: #f1f1ef;
+    color: var(--text);
+}
+
+body.theme-light .testimonial {
+    background: #ffffff;
+    border: 1px solid var(--line);
+}
+
+body.theme-light .testimonial p {
+    color: #3a3a3a;
+}
+
+body.theme-light footer {
+    background: #f4f4f2;
+    color: #1a1a1a;
+    border-top: 1px solid var(--line);
+}
+
+body.theme-light footer .footer-brand p,
+body.theme-light footer .footer-cta p {
+    color: var(--muted);
+}
+
+body.theme-light footer .footer-links a {
+    color: #1a1a1a;
+}
+
+body.theme-light footer .footer-button {
+    background: #1a1208;
+    color: #ffffff;
+}
+
+body.theme-light footer .social-icons a {
+    background: rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--line);
+}
+
+body.theme-light #backToTop {
+    color: #1a1208;
 }
 
 @media (max-width: 768px) {

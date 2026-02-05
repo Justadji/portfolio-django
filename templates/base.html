@@ -16,7 +16,7 @@
     <link rel="icon" href="{% static 'images/icon-192.png' %}">
 </head>
 
-<body data-sw-url="{% static 'service-worker.js' %}">
+<body class="{% block body_class %}{% endblock %}" data-sw-url="{% static 'service-worker.js' %}">
 <header class="sticky-header">
     <nav class="navbar">
         <a class="logo" href="{% url 'home' %}">ImDuerf</a>
